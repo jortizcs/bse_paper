@@ -16,46 +16,74 @@ unique variants of each scheme are implemented from building to building; variat
 even across buildings that have contracted the same vendor.
 This makes the integration process laborious for building experts and a non-starter for 
 non experts.  Morever, the process is fundamentally unscalable. 
-If we
-wish to have a broad impact across the entire building stock at scale we need
-to explore methods for overcoming this challenge.
+If we want to quickly run the job across many sites we need
+to explore methods quickly normalizing the data for acquisition.
 
-Consider a simple analysis whcih has the ability
-to identify anomalous readings from a specific kind of sensor.  In order to run the application
-the deployer needs to know the name of the sensorand how to attain readings from it.
-The stream identification process is manual.  The deployer loads the interface to the 
-building management system, tracks down the spatial or system view, clicks through several windows
-to locate the location of the point(s) of interest, mouses over the point(s) and records the name,
-and then uses that point name to request it from the data-fetch protocol -- typically BACNet or 
-LonTalk or another protocol. This process is repeated in \emph{every building} where this 
-application runs.  Any application that uses building data requires access to the building
-management system and the network carrying the data of interest.
+Consider a simple analysis which has the ability
+to identify anomalous readings from a specific kind of sensor. To execute this job, 
+the process organizes each sensor by type and location, organizes a the distribution of
+readings across types and locations, and identifies broken sensors where some fraction of
+their readings are above some threshold value on the distribution.
+In order to run this application
+the job needs to know the names of each sensor, its type, and its location.  
+This information is typically encoded in the name of the sensor or `point', as is
+common in the building system nomenclature.  For example, the point
+\texttt{BLDA1R435__ART} has all the information necessary for analysis in the form of 
+concatinated codes.  For example the name of
+the building (first 4 characters), the air handling unit identifier (the fifth character),
+the room number (R435), and the type ART (area room temperature) -- which indicates that
+this are measurement produced by a temperature sensor -- are all encoded in the 
+aforementioned point name.
 
-In order to meaningfully deal with disparate building streams in a scalable 
-fashion the streams should be \emph{searchable} across various properties, such
-as building name, room location, and statistical trends.  Moreover, we
-assert that wide searchability is necessary for achieving scalability.  By providing a tool for
-searching across building streams, we minimize the deployment time for applications that 
-allowing them to be used in \emph{all} buildings, not just a single one.  The aforementioned 
-building manamgent system user interface implicitly groups sensors by location in space
-or association with a system.  This grouping is also captured in the name of the point used by
-the underlying communication protocol.  For example, 'AHU' -- air handling unit -- is typically
-embedded in the name of every sensor that is associated with a particular air handling unit.
-A similar convention is used for denoting the type of data produced by the point (i.e. all points
-that contain 'ART' (area room temperature)  in their name refer to a temperature sensor).
-However, these conventions vary slightly across buildings, making it difficult to
-simply integrate based on such tags alone.  We need a way to unify and learn the basic
-set and structure of the tags in order to unify them.
+However, point names do not 
+always follow the exact same structure and certainly do not follow the same convention 
+across vendors.  Because each
+point is named by a human, the names can vary. This makes it difficult to construct a general
+set of rules for name construction. However, although name conventions are inexact, they 
+are generally similar across buildings with the \emph{same vendor}, so the rules that 
+describe the name in one building might also work to expand the names in another building.
+When automatic construction is not possible or
+uncertain, feedback from the building manager -- the expert who can identify the meaning of 
+more cryptic name encodings -- could provide feedback about the metadata for the sensor.
+We make use of automatic name expansion and active leanring techniques in order to learn
+as much as possible from the set of names available and combine that with expert feedback to
+improve the certainty and coverage of our scheme.
+%The stream identification process is manual.  The deployer loads the interface to the 
+%building management system, tracks down the spatial or system view, clicks through several windows
+%to locate the location of the point(s) of interest, mouses over the point(s) and records the name,
+%and then uses that point name to request it from the data-fetch protocol -- typically BACNet or 
+%LonTalk or another protocol. This process is repeated in \emph{every building} where this 
+%application runs.  Any application that uses building data requires access to the building
+%management system and the network carrying the data of interest.
 
-Also, commonality across certain statistical features can be used to group
-different streams.  For example, consider the distribution of temperature reading across
-the rooms in the building.  Given a value distribution, it might be easy to pick out values those
-that classify as statistical anoamlies.  If you consider the distribution per sensor type, then
-finding all statistically anomalous sensor might also identify those that are broken.
-This can be determined and indexed a priori, easing the time it takes to identify the 
-streams of interest to applications.
+%In order to meaningfully deal with disparate building streams in a scalable 
+%fashion the streams should be \emph{searchable} across various properties, such
+%as building name, room location, and statistical trends.  Moreover, we
+%assert that wide searchability is necessary for achieving scalability.  By providing a tool for
+%searching across building streams, we minimize the deployment time for applications that 
+%allowing them to be used in \emph{all} buildings, not just a single one.  The aforementioned 
+%building manamgent system user interface implicitly groups sensors by location in space
+%or association with a system.  This grouping is also captured in the name of the point used by
+%the underlying communication protocol.  For example, 'AHU' -- air handling unit -- is typically
+%embedded in the name of every sensor that is associated with a particular air handling unit.
+%A similar convention is used for denoting the type of data produced by the point (i.e. all points
+%that contain 'ART' (area room temperature)  in their name refer to a temperature sensor).
+%However, these conventions vary slightly across buildings, making it difficult to
+%simply integrate based on such tags alone.  We need a way to unify and learn the basic
+%set and structure of the tags in order to unify them.
 
-In this paper, we propose a technique which learns how to transform a building's metadata 
+%In addition, not all buildings provide a consistent naming convention sensors within them.
+%Therefore, we also explore different ways to expand the metadata in a normalized fashion.
+%Commonality across certain statistical features can be used to group
+%different streams.  For example, consider the distribution of temperature reading across
+%the rooms in the building.  Given a value distribution, it might be easy to pick out values those
+%that classify as statistical anoamlies.  If you consider the distribution per sensor type, then
+%finding all statistically anomalous sensor might also identify those that are broken.
+%This can be determined and indexed a priori, easing the time it takes to identify the 
+%streams of interest to applications.
+
+In this paper, we propose a set of techniques which learns how to transform a 
+building's metadata 
 to a common namespace by using a small number of examples from an expert. Once the transformation 
 rules are learnt for one building, it can be applied across buildings with a similar 
 metadata structure.  We also show how processes that extract statistical features and generate
