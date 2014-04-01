@@ -1,6 +1,36 @@
-\section{Case Study}
-In this section, we demonstrate that, with the automatically normalized and generated metadata, we are able to implement a few applications that are generalizable from one building to another building.
-
-\subsection{Uncomfortable Rooms}
+\section{Type Classification}
+For streams with incomplete metadata that is not usable, we propose a general techique to accomplish type classification. For each stream, we use the features extracted from the readings and 
 
 
+\begin{table}[h!]
+%\footnotesize
+ \begin{center}
+	\begin{tabular}{ r|c|c|c|c|c|c|c| }
+	\multicolumn{1}{r}{}
+	 &  \multicolumn{1}{c}{$CO_{2}$}
+	 & \multicolumn{1}{c}{$hum$}
+	 & \multicolumn{1}{c}{$lum$}
+	 & \multicolumn{1}{c}{$tem$}
+	  & \multicolumn{1}{c}{$dvp$} 
+	  & \multicolumn{1}{c}{$stp$} 
+	  & \multicolumn{1}{c}{$vav$} \\
+	\cline{2-8} 
+	$As CO_{2}$ & 58 & 0 & 0 & 0 & 0 & 5 & 4\\
+	\cline{2-8}
+	$hum$ & 0 & 97 & 0 & 0 & 4 & 4 & 0\\
+	\cline{2-8}
+	$lum$ & 0 & 0 & 73 & 1 & 3 & 17 & 5\\
+	\cline{2-8}
+	$tem$ & 0 & 0 & 0 & 667 & 2 & 23 & 0\\
+	\cline{2-8}
+	$dvp$ & 0 & 3 & 5 & 3 & 185 & 77 & 1\\
+	\cline{2-8}
+	$stp$ & 5 & 7 & 14 & 24 & 46 & 1294 & 38\\
+	\cline{2-8}
+	$vav$ & 1 & 1 & 4 & 0 & 3 & 85 & 91\\
+	\cline{2-8}
+	\end{tabular}
+ \end{center}
+ \caption{Confusion matrix for types from all three buildings.}
+ \label{tab:cluster}
+\end{table}
