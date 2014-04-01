@@ -2,17 +2,22 @@
 
 Buildings are sites of very large sensor deployments, typically containing
 up to several thousand sensors reporting physical measurement, continuously.
-Moreover, with the recent interest in reducing building energy consumption, it
+Moreover, with the recent interest in reducing building energy consumption and
+increasing their efficiency, it
 is important to consider ways to quickly bootstrap a set of building data streams
-into an anlytical pipeline to determine where there are opportunities for energy savings,
-discovery of broken sensors, and assessing and tracking overall building performance.
+into an anlytical pipeline.  These analyses consist of jobs that help give deeper
+insight into the overall performance of the building, 
+determine where there are opportunities for energy savings, and 
+discover broken sensors.
 However, current `point' naming conventions form a bottleneck in the scalability of
 the data integration process.  A `point' refers to a physical location where
 a sensor is taking measurements. Each building vendor uses their own naming scheme and
-uniques variants of each scheme are implemented from building to building; variations exist
-even across buildings that have contracted the same vendor to set up their deployment.
-This makes the integration process laborious and fundamentally unscalable.  If we
-wish to have a broad impact across the entire building stock, at scale, we need
+unique variants of each scheme are implemented from building to building; variations exist
+even across buildings that have contracted the same vendor.
+This makes the integration process laborious for building experts and a non-starter for 
+non experts.  Morever, the process is fundamentally unscalable. 
+If we
+wish to have a broad impact across the entire building stock at scale we need
 to explore methods for overcoming this challenge.
 
 Consider a simple analysis whcih has the ability
