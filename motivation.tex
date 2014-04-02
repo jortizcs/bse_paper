@@ -20,7 +20,10 @@ We examine the data from 56 buildings containing over 22,600 sense points. These
 represent a vast range in age, size, and density of deployment.  It also represents deployments
 that were set up by more than one vendor.  As expected, newer buildings have many more sense 
 points than older ones -- although some old buildings that have been retrofitted have over 1000  
-points within them. The maximum number of points in a 
+points within them. The general trend in the number of sense points versus the year the 
+building is built is roughly linearly increasing in the log of the number of points, as shown
+in Figure~\ref{fig:sense_pts_data_yb}.  
+The maximum number of points in a 
 single building is 6169 and the minimum is 27.   The built years spans over 100 years -- from 
 1905 to 2007. The size range spans over an order of magnitude 
 in square footage from about 30,000 square feet to over 360,000 square feet.  The access this
@@ -32,11 +35,13 @@ this kind of breadth of system and building types makes our study unique.
                 \centering
 		\includegraphics[width=\textwidth]{./figs/pts_vs_yearbuilt.eps}
                 \caption{Number of Points vs Year Built}
+                \label{fig:sense_pts_data_yb}
 	\end{subfigure}
 	\begin{subfigure}{0.48\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/pts_vs_buildsz.eps}
                 \caption{Number of Points vs Building Size}
+                \label{fig:sense_pts_data_bs}
 	\end{subfigure}
 \caption{}
 \label{fig:sense_pts_data}
