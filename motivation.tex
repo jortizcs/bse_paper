@@ -3,19 +3,21 @@
 Buildings are notoriously complex from a management perspective.  They consume a large fraction
 of the energy produced in the United States and much of is wasted~\cite{epa}.  There has been
 much work in the building science community to reduce their energy consumption and make them more
-efficieny, but the route to broader impact is typically carried out through regulations, guided
+efficieny, but the route to broader impact is typically carried out through regulations guided
 by the findings of studies in those communities~\cite{regulation}.
 We aim to let solutions reach buildings \emph{directly} by making sense of the data they produce
 as quickly and accurately as possible.
-In order for this to work at scale, we must explore ways to deal with the data produced
+In order to achieve this at scale, we must explore ways to deal with the data produced
 from sensors within them and to enable braod anaysis across several buildings at a time. Our study
 focuses on any building equipped with a network of sensors.  Nearly 
-three-quarters of commercial buildings contain a rich sensing fabric~\cite{study}; installed as part
-of their building management system.  It is the data from these system and variants of it, that
+three-quarters of commercial buildings contain a rich sensing fabric, installed as part
+of the building management system~\cite{study}.  
+It is the data from these system and variants of it, that
 we wish to unify and make sense of in a more systematic and automated fashion.
 
 Fortunately, we have access to a large corpus of data from buildings on our campus.
-We examine the data from 56 buildings and over 22,600 points.  The maximum number of points in a 
+We examine the data from 56 buildings containing over 22,600 sense points.  The maximum 
+number of points in a 
 single building is 6169 and the minimum is 27.  As expected, newer buildings have many more sense 
 points than older ones -- although some old buildings that have been retrofitted have over 1000  
 points. The year built for the buildings in the data set spans over 100 years -- from 1905 to 2007.
@@ -30,9 +32,8 @@ about 30,000 square feet to over 360,000 square feet.
 % BLDA1R545__ART
 %Buildings consume a large fraction of the energy produced in the United States, and much of it
 %is wasted\cite{epa}.  
-As mentioned, buildings are notoriously complex and although many commercial 
-buildings are equiped with a rich sensing infrastructure, ad-hoc data management practices
-make it difficult for any analytical solution to be widely ported across building
+As mentioned, buildings are notoriously complex and  ad-hoc data management practices
+make it difficult for any analytical solution to be widely ported or run across building
 systems.  For example, consider the following stream names: \texttt{BLDA1R435\_\_ART,
 BLDA1R435\_\_ARS, BLDA1R545\_\_ART}. Each name encodes contextual information in the form
 of concatinated character sequences. In these, the first 4 characters refer to the 
@@ -69,19 +70,19 @@ data sets.
 
 % Now discuss how the actual shapes of the readings can be quite similar looking
 
-\begin{figure}[h!]
-\centering
-    \includegraphics[width=0.48\textwidth]{figs/co2_pair.eps}
-    \caption{CO2 sensor traces.}
-\label{fig:co2traces}
-\end{figure}
-
-\begin{figure}[h!]
-\centering
-    \includegraphics[width=0.48\textwidth]{figs/temp_pair.eps}
-    \caption{temperature traces.}
-\label{fig:temptraces}
-\end{figure}
+%\begin{figure}[h!]
+%\centering
+%    \includegraphics[width=0.48\textwidth]{figs/co2_pair.eps}
+%    \caption{CO2 sensor traces.}
+%\label{fig:co2traces}
+%\end{figure}
+%
+%\begin{figure}[h!]
+%\centering
+%    \includegraphics[width=0.48\textwidth]{figs/temp_pair.eps}
+%    \caption{temperature traces.}
+%\label{fig:temptraces}
+%\end{figure}
 
 % tie this into search; search is done for scale
 % scale is necessary for broad impact
