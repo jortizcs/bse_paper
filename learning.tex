@@ -66,13 +66,19 @@ At a very high level, the algorithm tries to compute all possible transformation
 
  way we learn regular expressions from inputs provided by the expert. We shall use the example scada tag {\tt BLDA1R465  ART} as a goto example throughout this section.
 
-In the following sections, we will use the word {\it token} to refer a token from a character class. So a token might be is a character or a group of characters in a point to be expanded. In the For instance, in the point {\tt BLDA1R465 ART} has the following tokens
+In the following sections, we will use the word {\it token} to refer a token from a character class. So a token might be is a character or a group of characters in a point to be expanded. In the For instance, in the point {\tt BLDA1R465 ART} has the tokens as shown in Figure~\ref{fig:exampleInput}
+
 
 \subsubsection{Inputs}
 
 For every example an expert provides, we require three types of information - (a) the mapping of the labels in the data to normalized metadata tags , (b) the starting point of those labels, and (c) whether the value of the label is a constant or variable. As, an example, consider the sensor point name \texttt{BLDA1R435\_\_ART}. Shown below is the expected input by the user
-
-{\bf Sensor Name} :   \texttt{BLDA1R435\_\_ART} 
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=0.5\textwidth]{figs/inputExample.pdf}
+\caption{Input provided by the expert for fully qualifying the semantic structure of a sensor point name}
+\label{fig:exampleInput}
+\end{figure}
 
 
 

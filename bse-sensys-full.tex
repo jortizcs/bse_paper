@@ -27,6 +27,15 @@
 \usepackage{hyperref}
 \usepackage[ruled]{algorithm2e}
 \usepackage{epstopdf}
+% (1) choose a font that is available as T1
+% for example:
+\usepackage{lmodern}
+
+% (2) specify encoding
+\usepackage[T1]{fontenc}
+
+% (3) load symbol definitions
+\usepackage{textcomp}
 
 \numberofauthors{2}
 
@@ -74,6 +83,7 @@ In this paper, we propose a technique which learns how to transform a buildingâ€
 
 \input{intro}
 \input{motivation}
+\input{learning.tex}
 \input{related}
 \input{type}
 \input{casestudy}
