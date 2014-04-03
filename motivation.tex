@@ -42,8 +42,10 @@ visual inspection, the two
 encodings are similar enough that the engineer can decode the meaning.  However, for automatic 
 processing or processing a large number of points across buildings, these kinds of 
 variations makes it difficult to generalize the character-contruction rule set.  
-This means that analytical applications that use the data across a collection of buildings
-need to make building-specific adjustments in order to run the same analysis job for each
+\emph{Fundamentally, full coverage is attainable if we could learn all the codes and map
+them to more descriptive search terms.}
+Since many of the codes change from across vendors and buidlings, Analytical applications 
+need to make building-specific adjustments in order to run the same analysis job across each
 building.  For example, if we are trying to determine the fraction of uncomfortable rooms
 in each building on our campus, the two collections of sense points we need are the temperature
 sensors and the corresponding set points in each building.  Because the code for temperature
@@ -69,7 +71,8 @@ across a set of buildings.  If we wish to attain all the temperature sensors or 
 for a particular building, without knowing these codes, we should be able to attain
 it by search for all points in a particular building that measure ''temperature`` or
 that have ``setpoint'' in their description.
-To demonstrate this by collecting all the metadata across our building
+
+We demonstrate this by collecting all the metadata across our building
 testbed.  The testbed consists of almost 60 buildings and over 20,000 sense points.  We collected
 the names for each of the set points and any associated metadata that describes the meaning
 of the name.  Then, we run a number of grep searches on the data and calculate the 
@@ -77,7 +80,9 @@ relative success of the query.  Figure~\ref{fig:sodagrep} shows the results for 
 The `temperature` grep string is ``buildingA room temp'' and the `setpoint` grep string
 is ``buildingA room setpoint''.  For the temperature query we attain 87.5\% of the 
 actual sense points we are searching for, while for the setpoint query we attain only 56\%
-of the setpoints in the building. 
+of the setpoints in the building.  We could try different search queries that yield different
+results, however, because there's only \emph{some} overlapping metadata terms across
+buildings, coverage tends to be qutie poor.
 
 \begin{figure}[h!]
 \centering
@@ -86,23 +91,25 @@ of the setpoints in the building.
 \label{fig:sodagrep}
 \end{figure}
 
+% write a couple of paragraphs about why programming by example and 
+% input-output stuff here
 
-Without rule-set construction the data cannot be ingested properly or interpretted
-correctly.  
-However, there are ``active learning'' techniques in the literature~\cite{ms} 
-that address this problem by leveraging the knowledge of an expert. The idea behind active learning
-is that you can request input from an expert to improve the accuracy of your algorithm.
-In the case of name/tag expansion you 
-can generalize the set of rules that generate a name/tag by example, iteratively
-updating the name construction rule set for different types of names.  An expert feeds
-the system examples of names for a particular type of sensor or code, and the algorithms 
-that generalize the character-set construction rules can raise the confidence of the
-expanded expression.
-We explore the use
-of \emph{active learning} techniques to iteratively learn all the variants within an across
-data sets.
+%Without rule-set construction the data cannot be ingested properly or interpretted
+%correctly.  
+%However, there are ``active learning'' techniques in the literature~\cite{ms} 
+%that address this problem by leveraging the knowledge of an expert. The idea behind active learning
+%is that you can request input from an expert to improve the accuracy of your algorithm.
+%In the case of name/tag expansion you 
+%can generalize the set of rules that generate a name/tag by example, iteratively
+%updating the name construction rule set for different types of names.  An expert feeds
+%the system examples of names for a particular type of sensor or code, and the algorithms 
+%that generalize the character-set construction rules can raise the confidence of the
+%expanded expression.
+%We explore the use
+%of \emph{active learning} techniques to iteratively learn all the variants within an across
+%data sets.
 
-Fortunately, we have access to a large corpus of data from buildings on our campus.
+%Fortunately, we have access to a large corpus of data from buildings on our campus.
 We examine the data from 56 buildings containing over 22,600 sense points. These buildings 
 represent a vast range in age, size, and density of deployment.  It also represents deployments
 that were set up by more than one vendor.  As expected, newer buildings have many more sense 
