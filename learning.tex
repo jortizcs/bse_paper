@@ -42,7 +42,7 @@ well the input is
 - the user also tells us which position each string corresponds to 
 - whether a value is a constant or a variable.
 
-\subsection{techniques}
+\subsection{techniques - learning from example}
 
 There is a lot of related work in obtaining structured data from unstructured data formats. 
 
@@ -52,7 +52,12 @@ There is a lot of related work in obtaining structured data from unstructured da
 -the core idea is to generate as many possible regular expressions as possible and then slowly refine our model as we get more and more examples.
 
 
-\
+
+\subsection{Technique Overview}
+
+The synthesis technique is adapted from ~\cite{gulwani}, and tries to learn the regular expressions which 
+
+of our technique is to provide building-specific experts the ability to come up with ur technique tried to learn the regular expression patterns that 
 \subsection{learning by example}
 
 -The basic structure of our technique is derived from gluwani.
@@ -71,7 +76,8 @@ In the following sections, we will use the word {\it token} to refer a token fro
 
 \subsubsection{Inputs}
 
-For every example an expert provides, we require three types of information - (a) the mapping of the labels in the data to normalized metadata tags , (b) the starting point of those labels, and (c) whether the value of the label is a constant or variable. As, an example, consider the sensor point name \texttt{BLDA1R435\_\_ART}. Shown below is the expected input by the user
+For every example an expert provides, we require three types of information - (a) the normalized metadata tag which is contained in the point name,  (b) the mapping of the labels in the data to normalized metadata tags , (c) the starting point of those labels, and (d) whether the value of the label is a constant or variable. For instance, consider the expert is asked to fully qualify the sensor point name \texttt{BLDA1R435\_\_ART}. Shown below is the expected input by the user.
+
 \begin{figure}[h!]
   
   \centering
@@ -80,6 +86,7 @@ For every example an expert provides, we require three types of information - (a
 \label{fig:exampleInput}
 \end{figure}
 
+The aim of the learning algorithm would then be to fully qualify the remaining examples
 
 
 
@@ -105,7 +112,28 @@ learning by input output example
 -predicate generation
 
 
-\subsection{active learning}
+\subsection{Choosing Next Example for Expert}
+
+Since the number of sensors in a building might be large ( more than 1000 sensors in some cases ), presenting an appropriate example to the expert for classification 
+\begin{figure}[ht]
+\centering
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/pointOccuranceFreq.pdf}
+                \caption{Number of Points vs Year Built}
+                \label{fig:sense_pts_data_yb}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/pointCDF}
+                \caption{Number of Points vs Building Size}
+                \label{fig:sense_pts_data_bs}
+	\end{subfigure}
+\caption{Relationship between the built year and the building size on the number of sense
+points.  This data is summarize from a testbed that we used for experiments that consists of
+almost 60 buildings and over 20,000 sense points.}
+\label{fig:sense_pts_data}
+\end{figure}
 
 - min remaining
 -max remaining 
