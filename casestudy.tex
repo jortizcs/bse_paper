@@ -1,31 +1,31 @@
 \section{Case Study}
-In this section, we demonstrate that with the metadata automatically normalized and expanded using the techniques in previous section, we are able to implement a few applications that are generalizable from one building to another building without modification. As a proof of cncept, we implment two applications: a) identify the uncomfortable rooms and b) detect rogues rooms. We also evaluate the metadata expansion technique in terms of the accuracy for both applications compared against the gorund truth. 
+In this section, we demonstrate that with the metadata automatically normalized and expanded using the techniques in previous section, we are able to implement a few applications that are generalizable from one building to another building without modification. As a proof of cncept, we implment two applications: a) identify the uncomfortable rooms and b) detect rogues rooms. We also evaluate the metadata expansion technique in terms of the accuracy for both applications compared against the ground truth. 
 
 \subsection{Experimental Setup}
 We implement two applications and perform the analysis on three buildings from two campuses, and each building is installed with a different management system. Building A and B are from the same campus on the west coast while buidling C is from a second campus on the east coast. Building A was built in mid-1990s using the system from Barrington ~\cite{}. Building B was recently built in 2005 using the Siements BACnet system~\cite{}. Building C is the newest building among the three installed with Trane's system~\cite{}, which was put into use from 2011. We collected temperature data as well as setpoint of the rooms in each building. And the data used from each building for analysis is from one week in June 2009, January 2012 and June 2013 respectively.
 
-\begin{figure*}[h]
+\begin{figure*}[h!]
 \centering
-	\begin{subfigure}{0.32\textwidth}
+	\begin{subfigure}{0.48\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/Soda_new.eps}
                 \caption{Building A}
 	\end{subfigure}
-	\begin{subfigure}{0.32\textwidth}
+	\begin{subfigure}{0.48\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/SDH_new.eps}
                 \caption{Building B}
 	\end{subfigure}
-	\begin{subfigure}{0.32\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/Rice_new.eps}
-                \caption{Building C}
-	\end{subfigure}
-\caption{For each building, we present the distribution of temperature deviation between: a) room temperature and the corresponding setpoint (in blue), b) room temperature and the comfort range suggested by ASHRAE (in red), c) room temperature setpoint and the ASHARE comfort suggestion (in black).}
+	% \begin{subfigure}{0.32\textwidth}
+ %                \centering
+	% 	\includegraphics[width=\textwidth]{./figs/Rice_new.eps}
+ %                \caption{Building C}
+	% \end{subfigure}
+\caption{For each building, we present the distribution of temperature deviation between: a) room temperature and the corresponding setpoint (solid), b) room temperature and the comfort range suggested by ASHRAE (dashed), c) room temperature setpoint and the ASHARE comfort suggestion (dotted).}
 \label{fig:cdf_temp}
 \end{figure*}
 
-\begin{figure*}[h]
+\begin{figure*}[h!]
 \centering
 	\begin{subfigure}{0.48\textwidth}
                 \centering
@@ -49,7 +49,7 @@ To identify potential uncomfort in a building, for each room we are particularly
 \subsection{Rogue Rooms}
 Heating and cooling contribute to the largest portion of energy consumption of a buidling, and often, HVAC system operates abnormally either because the system fails itself or the schedule of the buidling is problematic. And there are often some zones and rooms in a building that are constantly cold or hot than their neighbors and incur energy waste. We showed the temeprature deviations above, and we are particularly interested in the periods when a room deviates from the setpoint more than 3 Celsius degree, which is highly likely to indicate that the room is under either heating or coolong. Therefore, for each building, we zoom in to the interested portion and find the rooms whose percentage of time that falls into the interested area is extremely high, i.e., which room's temperature deviates from the setpoint more than 3 Celsius degree in most of the time, and the results are summarized in Table~\ref{}. Again, the grounf truth results are listed in Table~\ref{} as comparison.
 
-\begin{table}[h!]
+\begin{table}[ht!]
 %\footnotesize
  \begin{center}
 	\begin{tabular}{|c|c|c|c|c|c|}
@@ -79,9 +79,24 @@ Heating and cooling contribute to the largest portion of energy consumption of a
 	\cline{1-6}
 	498 & 0.91 & S5-7 & 0.47 & 511B & 1\\
 	\cline{1-6}
-
 	\end{tabular}
  \end{center}
- \caption{We present the rooms in each building whose temperature deviates from the setpoint more than 3 Celsius degree. For each building, the first column is room number and the second column shows the percentage of the one-week time that the room deviates that much.}
+ \caption{We present the ground truth for rooms in each building whose temperature deviates from the setpoint more than 3 Celsius degree. For each building, the first column is room number and the second column shows the percentage of the one-week time that the room deviates that much.}
  \label{tab:cluster}
 \end{table}
+
+\begin{figure*}[h!]
+\centering
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/rogue_soda.eps}
+                \caption{Building A}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/rogue_sdh.eps}
+                \caption{Building B}
+	\end{subfigure}
+\caption{Dividing the rooms whose temperature once deviates from the setpoint more than 3 Celsius degree by HVAC zones: for each zone, we show the number of rooms in the zone, the number of zones once appears to be rogue, and the number of rooms that were rogues more than 80\% in the one-week period.} 
+\label{fig:rogue}
+\end{figure*}
