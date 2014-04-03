@@ -6,22 +6,38 @@ We implement two applications and perform the analysis on three buildings from t
 
 \begin{figure*}[h]
 \centering
-	\begin{subfigure}{0.33\textwidth}
+	\begin{subfigure}{0.32\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/Soda_new.eps}
                 \caption{Building A}
 	\end{subfigure}
-	\begin{subfigure}{0.33\textwidth}
+	\begin{subfigure}{0.32\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/SDH_new.eps}
                 \caption{Building B}
 	\end{subfigure}
-	\begin{subfigure}{0.33\textwidth}
+	\begin{subfigure}{0.32\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/Rice_new.eps}
                 \caption{Building C}
 	\end{subfigure}
 \caption{For each building, we present the distribution of temperature deviation between: a) room temperature and the corresponding setpoint (in blue), b) room temperature and the comfort range suggested by ASHRAE (in red), c) room temperature setpoint and the ASHARE comfort suggestion (in black).}
+\label{fig:cdf_temp}
+\end{figure*}
+
+\begin{figure*}[h]
+\centering
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/50-soda.eps}
+                \caption{Building A}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/50-sdh.eps}
+                \caption{Building B}
+	\end{subfigure}
+\caption{The error rates of searches over the expanded metadata using our techniques. We do two searches particularly: ``room temp'' and ``room temp setpoint''.}
 \label{fig:cdf_temp}
 \end{figure*}
 
