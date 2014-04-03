@@ -2,7 +2,7 @@
 *.aux
 *.bbl
 *.blg
-*.pdf
 *.synctex.gz
 *.log
 *.out
+bse-sensys-full.pdf

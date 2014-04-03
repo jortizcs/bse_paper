@@ -16,7 +16,7 @@ In this section, we go into detail about how we apply program synthesis techniqu
 %A lot of the sense points contained in a particular building is very site-specific, e.g a building may contain a fault detector for its backup chiller, for which there might not be a well-defined sensor labelling schema from the vendor. In such scenarios, the agent commissioning a building tries his best to convey the information by using indicative labels. E.g we encountered points labelled \texttt{BLDA4S18SASA\_M}, which denotes an alarm if the supply air temperature setpoint for a supply fan gets too high\footnote{The point is to be read thus : the building name is denoted by {\it BLD}, {\it A4} indicates an air handling unit whose identification number if $4$. {\it S$18$} denotes a supple fan whose identification number if $18$, and {\it SASA\_M} denotes a supply alarm setpoint}. 
 {\bf Terminology :} We shall refer to each distinct component of a sensor name, which together signify some semantic content as a label. For instance, the example mentioned in the previous section \texttt{BLDA1R435\_\_ART} has six labels --- \texttt{BLD, A, 1, R, 435} and \texttt{ART}. A \emph{tag} qualifies the label to a standard namespace. In our example,  
 
-\subsection{Algorithm Overview}
+\subsection{Algorithm Overview}ope
 The main aim of this algorithm is to learn the regular expressions that identify different labels in a sensor name. We require an expert to give examples on how to resolve label boundaries for a particular sensor name, and the metadata tag that qualifies it. The algorithm generates a wide set of regular expressions which could extract the given label from the sensor name. When another example containing the same labels is given by the expert, the algorithm intersects the set of regular expressions obtained from the two examples, and developes and classifier which identifies which sensor names contains that particular label. As more examples are added, the classifier gets tuned and so does the regular expression needed to find a label. 
 
 some intro into what we are doing to automate
@@ -117,6 +117,13 @@ learning by input output example
 -intersection
 -predicate generation
 
+\begin{figure}[h!]
+  
+  \centering
+    \includegraphics[width=0.5\textwidth]{figs/gulwani-noconverge.pdf}
+\caption{Number of sensor names fully qualified with a token set consisting simply of alphabetic characters [A-Z], numerals [0-9], and one token for each special character.}
+\label{fig:simpleTokenNoCoverage}
+\end{figure}
 
 
 \section{Evaluation of Learning By Example}
