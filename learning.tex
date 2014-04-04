@@ -276,16 +276,16 @@ The distribution frequency of labels also has a long tail. For both the building
 	\begin{subfigure}{0.48\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/pointOccuranceFreq.pdf}
-                \caption{Percentage of sensor names each label appears in. The x-axis is sorted according to the frequency of occurence of a label}
+                \caption{Percentage of sensor names each tag appears in. The x-axis is sorted according to the frequency of occurence of a label}
                 \label{fig:labelFreq}
 	\end{subfigure}
 	\begin{subfigure}{0.48\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/pointCDF.pdf}
-                \caption{Percentage of sensor names fully qualified by the highest ranking labels. A point ($x$,$y$) indicates that $y$ sensor names could be fully qualified by using labels ranked $1$ ... $x$}
+                \caption{Percentage of sensor names fully qualified by the highest ranking tags. A point ($x$,$y$) indicates that $y$ sensor names could be fully qualified by using labels ranked $1$ ... $x$}
                 \label{fig:pointCDF}
 	\end{subfigure}
-\caption{Characteristics of labels from two buildings we generated ground-truth data to test our learning technique}
+\caption{Characteristics of tag application from two buildings we generated ground-truth data for, to test our learning technique}
 \label{fig:buildingLabelCharacteristics}
 \end{figure}
 
@@ -338,30 +338,10 @@ We wrote a script that automatically gave the learning algorithm the example tha
   
   \centering
     \includegraphics[width=0.5\textwidth]{figs/campusWideStats.pdf}
-\caption{Language for learning substring extraction}
-\label{fig:language}
+\caption{Applicability of the tags learnt from Building $1$ to other buildings in our testbed.A tag is applicable to another point name if it either is the same constant value as encountered in Building $1$, or if the point name has a variable substring which could be qualified using the same tags as found in Building $1$.  The x-axis are the tags ordered by their frequency of occurence in Building $1$. If there is no value corresponding to a particular value on the x-axis, it indicates that the particular tag was not applicable to any other building. The primary y-axis shows the percentage of total point names in the remaining buildings the same tags are applicable to. The secondary y-axis shows the percentage of the number of buildings a particular tag may be used to qualify a sensor point of.  }
+\label{fig:campusWideStats}
 \end{figure}
 
-\begin{figure*}[ht!]
-\centering
-	\begin{subfigure}{0.4\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/recallCampusWide-50.pdf}
-                \caption{50\% full qualification}
-	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/recallCampusWide-70.pdf}
-                \caption{70\% full qualification}
-	\end{subfigure}
-	\begin{subfigure}{0.4\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/recallCampusWide-90.pdf}
-                \caption{90\% full qualification}
-	\end{subfigure}
-\caption{Application of learnt regular expressions to similar tags in the rest of the buildings of our deployment}
-\label{fig:campuswide}
-\end{figure*}
 
 
 
@@ -371,9 +351,29 @@ Figure~\ref{fig:campusWideStats} shows the applicability of tags learnt from Bui
 
 It was impractical to ground truth all the buildings and its 15,000 sensor points for our experiment. Hence, we hand wrote regular expressions to the best of our efforts to qualify sensor names in those buildings. It is this manual qualification data that we treat as ground truth in the our experiment. We run three experiments, where we use the regular expressions obtained after 50, 70 and 90\% full qualification results obtained by the {\bf Random} process in the previous experiment(see Figure~\ref{fig:active-learning-soda}) respectively . While running these expressions on a different building, we just replaced the token corresponding to the tag {\bf site} to the building-specific {\bf site}  token. 
 
-Figure~\ref{fig:recallCampusWide} shows the true-positive rate based for each tag based on our ground truth data. The true positive rate indicates that the required tag was correctly applied where it was applicable, and it was able to qualify the correct substring from the corresponding sensor name. As we can see, the regular expressions were able to identify almost all the buildings that each tag learnt from Building $1$ was applicable to. Some of the tags could not be applicable to other buildings, because they use different constant values for the same tag name. For instance, the {\bf exhaust fan} tag is specified in certain buildings as \texttt{EF}, wheras in Building $1$ it was specified as \texttt{E}. Also, certain variable tags vary in format across buildings, e.g the {\bf zoneRef} tag, which leads to a lower true positive rate for such tags. 
+Figure~\ref{fig:recallCampuswide} shows the true-positive rate based for each tag based on our ground truth data. The true positive rate indicates that the required tag was correctly applied where it was applicable, and it was able to qualify the correct substring from the corresponding sensor name. As we can see, the regular expressions were able to identify almost all the buildings that each tag learnt from Building $1$ was applicable to. Some of the tags could not be applicable to other buildings, because they use different constant values for the same tag name. For instance, the {\bf exhaust fan} tag is specified in certain buildings as \texttt{EF}, wheras in Building $1$ it was specified as \texttt{E}. Also, certain variable tags vary in format across buildings, e.g the {\bf zoneRef} tag, which leads to a lower true positive rate for such tags. 
 
-\FloatBarrier
+\begin{figure*}[ht!]
+\centering
+	\begin{subfigure}{0.4\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/recallCampusWide-50.pdf}
+                \caption{Regular expressions obtained after 50\% full qualification by {\bf Random}}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/recallCampusWide-70.pdf}
+                \caption{Regular expressions obtained after 70\% full qualification by {\bf Random}}
+	\end{subfigure}
+	\begin{subfigure}{0.4\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/recallCampusWide-90.pdf}
+                \caption{Regular expressions obtained after 90\% full qualification by {\bf Random}}
+	\end{subfigure}
+\caption{This Figure shows the efficacy of using the regular expressions learned on Building $1$ in qualifying point names with similar tags in other buildings, for three different set of expressions obtained from our language after applying the {\bf Random} example generator in the previous experiment until it had achieved 50, 70 and 90\% full qualifications of sensor names in Building $1$. The x-axis are the tags ordered by their frequency of occurence in Building $1$. The primary y-axis shows the true positive rate of identifying a particular tag in the point names in other buildings as compared to our ground truth data. The secondary y-axis shows the true positive rate rate of identifying a tag in a different building as compared to our ground truth data.}
+\label{fig:recallCampuswide}
+\end{figure*}
+
 %
 %\begin{figure}[h!]
 %\centering
