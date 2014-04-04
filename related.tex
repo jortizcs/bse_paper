@@ -1,6 +1,25 @@
 \section{Related Work}
 
-\cite{Harris:2011}
-\cite{Gulwani:2011}
-\cite{Singh:2012}
-\cite{Gulwani12spreadsheetdata}
+Our work borrows from from the literature in the context of providing a way to search
+through data from sensors in buildings.  Our approach consists of two main components:
+metadata boosting and search.  Our main focus in this paper is on metadata boostting.
+We use the technique introduced by Gulwani et al.\cite{Gulwani:2011} in order to learn 
+the expanded form of `point` tags.  In their work, and related extensions~\cite{Harris:2011,
+Singh:2012,Gulwani12spreadsheetdata}, they provide a set of libraries that implement
+algorithms to learn the various patterns for strings in excel spreadsheets.  Because many
+excel users are not programmers, it was clear that the interaction model should be based
+on having the user provide input-output examples and for a the system to iteratively learn
+the pattern the user would write if they were more technical inclined.  In our work
+we use a similar approach and make non-trivial extensions to it in order to boost the
+existing metadata with a normalized set of tags.  This allow users to broadly search across
+all points for multiple buildings at once, without having to engage in the tedious
+pattern adjustment task for expansion.
+
+The de facto approach in buildings is to form communities that follow are particular standard.
+Each of the vendors follows their own general structure in point naming, however there
+are general standards emerging to unify these across vendors, such as the Building
+Information Model (BIM)~\cite{BIM} and Green Building XML~\cite{GBXML}.  These describe an 
+object structure to describe, in great detail, the various physical components of the building,
+the internal subsystems, and the sensors within them.  The standard was mainly proposed
+for use by architectural design firms to construct and share building models across software
+suites.  
