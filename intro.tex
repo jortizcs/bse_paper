@@ -9,50 +9,66 @@ into an anlytical pipeline.  These analyses consist of jobs that help give deepe
 insight into the overall performance of the building, 
 determine where there are opportunities for energy savings, and 
 discover broken sensors.
-However, current `point' naming conventions form a bottleneck in the scalability of
-the data integration process.  A `point' refers to a physical location where
-a sensor is taking measurements. Each building vendor uses their own naming scheme and
-unique variants of each scheme are implemented from building to building; variations exist
-even across buildings that have contracted the same vendor.
+However, current `point' naming conventions and unsystematic recording of metadata form a 
+bottleneck in the scalability of the data integration process.  A `point' refers to a 
+physical location where
+a sensor is taking measurements. 
+%Each building vendor uses their own naming scheme and
+%unique variants of each scheme are implemented from building to building; variations exist
+%even across buildings that have contracted the same vendor.
+In addition, more descriptive information is sometimes unavailable to give detailed information
+about the meaning of the tags -- so determining their meaning is painfully slow or impossible.  
+Because these are conventions carried
+about by humans, they are inconsistent within and across building data sets.
 This makes the integration process laborious for building experts and a non-starter for 
-non experts.  Morever, the process is fundamentally unscalable. 
+non experts.  %The process is fundamentally unscalable. 
+
 If we want to quickly run the job across many sites we need
 to explore methods automatically normalizing the data and boosting the
-existing set of metadata per point.  This will allow wide searchability of points across
+existing set of metadata per point.  This will allow wide \emph{searchability} of points across
 many buildings at once.
-
-Consider a simple analysis program, which has the ability
-to identify anomalous readings from a specific kind of sensor. To execute this job, 
-the process organizes each sensor by type and location, organizes a the distribution of
-readings across types and locations, and identifies broken sensors where some fraction of
-their readings are above some threshold value on the distribution.
-In order to run this application
-the job needs to know the names of each sensor, its type, and its location.  
-This information is typically encoded in the name of the sensor or `point', as is
-common in the building-system nomenclature.  For example, the point
-\texttt{BLDA1R435\_\_ART} is constructed as a concatenation of common codes.
-The name of the building (first 4 characters), the air handling unit identifier (the 
-fifth character), the room number (R435), and the type ART (area room temperature) -- which 
-indicates that this are measurement is produced by a temperature sensor. In addition,
-to point names there may be some descriptive metadata.  This extra information is 
-also useful.
-
-However, point names do not always follow the exact same structure within and across
-buildings and certainly do not 
-follow the same convention across vendors.  Because each
-point is named by a human, the names can vary. This makes it difficult to construct a general
-set of rules for name construction.  In this paper we aim to boost the existing 
-metadata by learning the rules of construction through a programming-by-example
-approach where the user provides some input-output examples to boost the existing
-metadata with extra terms.  We can then search across the boosted metadata to increase
-our search harvest over time.
-
 In order to meaningfully deal with disparate building streams in a scalable 
 fashion the streams should be \emph{searchable} across various properties, such
 as building name, room location, and type.  Moreover, we
 assert that wide searchability is necessary for achieving scalability.  By providing a tool for
 searching across building streams, we minimize the deployment time for applications that 
 allowing them to be used in \emph{all} buildings, not just a single one.  
+
+Consider a simple analysis program, which has the ability
+to identify anomalous readings from a specific kind of sensor. To execute this job, 
+the process organizes each sensor by type and location, organizes a the distribution of
+readings across them, and identifies broken sensors where some fraction of
+their readings are above some threshold value on the distribution.
+The identification step in the process in the perhaps the most challenging 
+because of the problems described.  Ideally, the program would search for points the
+way you search for web pages in a search engine -- using semantically meaningful 
+terminology. Some codes and metadata across buildings might be unique but we aim 
+to disover the overlap to order for the search results to yield a higher harvest
+(increased coverage of the points that meet the search criteria).
+We can treat both the name and the description as a set of terms that are associated 
+with a measurement point.
+
+%In order to run this application
+%the job needs to know the names of each sensor, its type, and its location.  
+Sensor 'point' names (from building-system nomenclature) contains set of codes that are 
+semantically meaningful to the building manager of a specific building.
+For example, the point \texttt{BLDA1R435\_\_ART} is constructed as a concatenation of such codes.
+The name of the building (first 4 characters), the air handling unit identifier (the 
+fifth character), the room number (R435), and the type ART (area room temperature) -- which 
+indicates that this are measurement is produced by a temperature sensor. In addition,
+to point names there may be some descriptive metadata.  The description for this point (if it 
+exists) would describe that this is a ``temperature sensors in room 435''.
+However, point names do not always follow the exact same structure within and across
+buildings and certainly do not 
+follow the same convention across vendors.  
+%Because each
+%point is named by a human, the names can vary. This makes it difficult to construct a general
+%set of rules for name construction.  
+In this paper we aim to boost the existing 
+metadata by learning the rules of construction through a programming-by-example
+approach where the user provides some input-output examples to boost the existing
+metadata with extra terms.  We can then search across the boosted metadata to increase
+our search harvest over time.
 
 %The aforementioned 
 %building management system user interface implicitly groups sensors by location in space
@@ -96,7 +112,7 @@ allowing them to be used in \emph{all} buildings, not just a single one.
 %This can be determined and indexed a priori, easing the time it takes to identify the 
 %streams of interest to applications.
 
-In this paper, we propose a set of techniques which learns how to transform a 
+We propose a set of techniques which learns how to transform a 
 building's metadata 
 to a common namespace by using a small number of examples from an expert. Once the transformation 
 rules are learnt for one building, it can be applied across buildings with a similar 
