@@ -93,6 +93,27 @@ buildings, coverage tends to be qutie poor.
 
 % write a couple of paragraphs about why programming by example and 
 % input-output stuff here
+A key observation we have made while attempting to write ingestion scripts in that 
+we create a program $P_{1}$ to that parses the data and generates a set of point names
+$n_{1}$ with coverage $c_{1}$ of the points we need to obtain.  We notice there are
+points missing, so we write another program $P_{2}$ that generates another set of points
+$n_{2}$ which includes some of all of the points in $n_{1}$ and gives us coverage $c_{2}$.
+We keep noticing there are points missing and keep either expanding or adjusting
+the program to get closer and closer to full coverage.  In practice, the coverage is not
+easily attainable without an expert, familiar with the data set, inspecting the results.
+So the challenge is to attain the good coverage in one (or a few) buildings using input-out
+examples, using a technique similar
+to the work by Gulwani et al~\cite{Gulwani:2011}, and use this the resulting program and
+a few more example in each building to have the process learn the variants of all the codes
+and boost them with extra tags that are learned from other buildings.
+
+This process allows us to leverage the knowledge of the expert while minimzing the integration
+overhead per building.  Moreoever, as more examples the provided, the better that 
+algorithm can learn how to cover a broader set of codes and boost them with common tags.
+Also, the technique used in previous work is well suited for our problem, since
+users tend to be non-programmers.  The input-output example interactive model is well suited
+for interacting with non-programmers and getting the kind of information we need from them
+to automate the program creation process to learn the various point code. 
 
 %Without rule-set construction the data cannot be ingested properly or interpretted
 %correctly.  
@@ -110,25 +131,16 @@ buildings, coverage tends to be qutie poor.
 %data sets.
 
 %Fortunately, we have access to a large corpus of data from buildings on our campus.
-We examine the data from 56 buildings containing over 22,600 sense points. These buildings 
+In our experiments we used an extensive building testbed that 
+consists of 56 buildings containing over 22,600 sense points. These buildings 
 represent a vast range in age, size, and density of deployment.  It also represents deployments
 that were set up by more than one vendor.  As expected, newer buildings have many more sense 
 points than older ones -- although some old buildings that have been retrofitted have over 1000  
 points within them. The general trend in the number of sense points versus the year the 
 building is built is roughly linearly increasing in the log of the number of points, as shown
 in Figure~\ref{fig:sense_pts_data_yb}.  
-The maximum number of points in a 
-single building is 6169 and the minimum is 27.   The built years spans over 100 years -- from 
-1905 to 2007. The size range spans over an order of magnitude 
-in square footage from about 30,000 square feet to over 360,000 square feet.  There is no
-observable correlation between the size of the building and the number of sense points.
-Figure~\ref{fig:sense_pts_data_bs} shows a log-log plot of the number of points versus
-the size of the building.  There is one large building with many sense points, but the size
-seems to have little to do with the density of the deployment.
-The access this
-this kind of breadth of system and building types makes our study unique.
 
-\begin{figure}[ht]
+\begin{figure}[htb!]
 \centering
 	\begin{subfigure}{0.48\textwidth}
                 \centering
@@ -147,6 +159,17 @@ points.  This data is summarize from a testbed that we used for experiments that
 almost 60 buildings and over 20,000 sense points.}
 \label{fig:sense_pts_data}
 \end{figure}
+
+The maximum number of points in a 
+single building is 6169 and the minimum is 27.   The built years spans over 100 years -- from 
+1905 to 2007. The size range spans over an order of magnitude 
+in square footage from about 30,000 square feet to over 360,000 square feet.  There is no
+observable correlation between the size of the building and the number of sense points.
+Figure~\ref{fig:sense_pts_data_bs} shows a log-log plot of the number of points versus
+the size of the building.  There is one large building with many sense points, but the size
+seems to have little to do with the density of the deployment.
+The access this
+this kind of breadth of system and building types makes our study unique.
 
 
 
