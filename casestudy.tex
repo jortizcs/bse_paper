@@ -37,25 +37,25 @@ It's not unusual to have rooms in a building stay extremely cold or hot thus mak
 	\cline{1-4} 
 	 room\# & \% & room\# & \%\\
 	\cline{1-4}
-	 326 & 1 & S3-6 & 1\\
+	 326 & 1 & 330B & 1\\
 	\cline{1-4}
-	 340 & 1 & S2-1 & 1\\
+	 340 & 1 & 213 & 1\\
 	\cline{1-4}
-	352 & 1 & S1-2 & 0.72\\
+	352 & 1 & 148 & 0.72\\
 	\cline{1-4}
-	364 & 1 & S6-09 & 0.54\\
+	364 & 1 & 629 & 0.54\\
 	\cline{1-4}
-	376A & 1 & S7-16 & 0.49\\
+	376A & 1 & 768 & 0.49\\
 	\cline{1-4}
-	380 & 1 & S4-15 & 0.45\\
+	380 & 1 & 458 & 0.45\\
 	\cline{1-4}
-	384 & 1 & S6-10 & 0.44\\
+	384 & 1 & 621 & 0.44\\
 	\cline{1-4}
-	405A & 1 & S7-10 & 0.42\\
+	405A & 1 & 750 & 0.42\\
 	\cline{1-4}
-	405B & 1 & S5-15 & 0.35\\
+	405B & 1 & 571 & 0.35\\
 	\cline{1-4}
-	410A & 1 & S5-13 & 0.29\\
+	410A & 1 & 548 & 0.29\\
 	\cline{1-4}
 	\end{tabular}
  \end{center}
@@ -97,25 +97,25 @@ Heating and cooling contribute to the largest portion of energy consumption of a
 	\cline{1-4} 
 	 room\# & \% & room\# & \%\\
 	\cline{1-4}
-	 330B & 1 & S3-6 & 1\\
+	 330B & 1 & 330B & 1\\
 	\cline{1-4}
-	 340 & 1 & S2-1 & 1\\
+	 340 & 1 & 213 & 1\\
 	\cline{1-4}
-	420A & 1 & S1-2 & 0.93\\
+	420A & 1 & 148 & 0.93\\
 	\cline{1-4}
-	420 & 1 & S7-16 & 0.67\\
+	420 & 1 & 768 & 0.67\\
 	\cline{1-4}
-	698 & 1 & S3-13 & 0.62\\
+	698 & 1 & 371 & 0.62\\
 	\cline{1-4}
-	442 & 0.996 & S4-15 & 0.62\\
+	442 & 0.996 & 458 & 0.62\\
 	\cline{1-4}
-	398 & 0.981 & S5-5 & 0.57\\
+	398 & 0.981 & 538 & 0.57\\
 	\cline{1-4}
-	336 & 0.96 & S4-1 & 0.54\\
+	336 & 0.96 & 413 & 0.54\\
 	\cline{1-4}
-	183 & 0.92 & S5-16 & 0.48\\
+	183 & 0.92 & 558 & 0.48\\
 	\cline{1-4}
-	498 & 0.91 & S5-7 & 0.47\\
+	498 & 0.91 & 548 & 0.47\\
 	\cline{1-4}
 	\end{tabular}
  \end{center}
@@ -139,7 +139,7 @@ Heating and cooling contribute to the largest portion of energy consumption of a
 % \label{fig:rogue}
 % \end{figure*}
 
-\subsection{How Many Rooms are Missed?}
+\subsection{How Much We Missed}
 The metadata expansion contains certain errors therefore when we do a search over the expanded metadata we might not get all the desired streams for analysis. Figure~\ref{fig:error} shows the error rates of the search results over expanded metadata for the two test bed buildings. On the left, 50\% of the metadata of building 1 was correctly fully expanded, and doing the two searches for ``room temperature'' and ``room temperature setpoint'' will get us all the desired streams. Therefore, performing the uncomfortable and rogue rooms analysis will not miss any rooms. Meanwhile, for building 2 on the right, when 50\% of the metadata is correctly fully expanded, we missed X and Y streams for the same two searches respectively. Since not all of the X rooms are necessarily uncomfortable or rogue, we missed P and Q rooms for the two applications as a result.
 
 With the expanded and normalized metadata of a building, we can run useful analysis and identify potential problems in the it. Even though the exapnsion has errors in it, we are still able to find most of the problematic rooms.
@@ -160,13 +160,14 @@ With the expanded and normalized metadata of a building, we can run useful analy
 \label{fig:error}
 \end{figure*}
 
+%156,0,8; 13,0,3; 4,0,0; 3,0,3
 \begin{table}[ht!]
 %\footnotesize
  \begin{center}
 \begin{tabular}{rcc}
 \multicolumn{1}{l}{} & Bldg 1                 & Bldg 2                  \\ \cline{2-3} 
-Uncmft               & \multicolumn{1}{|c}{0} & \multicolumn{1}{|c|}{4} \\ \cline{2-3} 
-Rogue                & \multicolumn{1}{|c}{0} & \multicolumn{1}{|c|}{5} \\ \cline{2-3} 
+Uncmft               & \multicolumn{1}{|c}{156/0/8} & \multicolumn{1}{|c|}{4/0/0} \\ \cline{2-3} 
+Rogue                & \multicolumn{1}{|c}{13/0/3} & \multicolumn{1}{|c|}{3/0/3} \\ \cline{2-3} 
 \end{tabular}
  \end{center}
  \caption{The number of missed rooms for the two applications for the two test bed buildings.}
