@@ -15,7 +15,7 @@ In this section, we go into detail about how we apply program synthesis techniqu
 %
 %A lot of the sense points contained in a particular building is very site-specific, e.g a building may contain a fault detector for its backup chiller, for which there might not be a well-defined sensor labelling schema from the vendor. In such scenarios, the agent commissioning a building tries his best to convey the information by using indicative labels. E.g we encountered points labelled \texttt{BLDA4S18SASA\_M}, which denotes an alarm if the supply air temperature setpoint for a supply fan gets too high\footnote{The point is to be read thus : the building name is denoted by {\it BLD}, {\it A4} indicates an air handling unit whose identification number if $4$. {\it S$18$} denotes a supple fan whose identification number if $18$, and {\it SASA\_M} denotes a supply alarm setpoint}. 
 
-\subsection{Inputs, desired outputs, and terminology}
+\subsection{Terminology}
 
 The expert is expected to point out \emph{(Tag Name, Tag Value, Value Type)} tuples in the sensor name. A {\it tag} is mapped on to a substring of the sensor name, which is called its {\it value}. A tag can have a constant or a variable value. A value should be regarded a constant if it is not specific to that particular sensor. 
 
@@ -92,115 +92,150 @@ Both these sensor names have the exact same arrangement of numeric and alphabeti
 \label{fig:simpleTokenNoCoverage}
 \end{figure}
 
-\subsubsection{Adding New Tokens}
+\subsubsection{Challenges}
+
+Adaptation of the synthesis technique to our context involves certain challenges. First, the number of tags required to fully qualify an entire building might be large, wheras certain tags may be applicable on a very limited number of sensor names. In such a case, the {\bf Match}$(v_i,r,c)$ expression for each tag should be expressive enough to differentiate a small group of sensor names from the remaining. 
+
+Second, care should be taken while merging the {\bf SubString} rules for each tag. 
+
+Second, a building may have 1000s of sensor points, making visual inspection of correctness of sensor name qualification very hard. Incorrectly qualification of sensor names can be mitigated by being more conservative with the boolean preciates in the top level {\bf Switch} operator. 
+
+Below, we list five techniques that augment the basic language shown in Figure~\ref{fig:language} to enable correct classification 
+
+\subsubsection{Token Set}
+
+Different conventions of sensor naming from building to building precludes us from having an apriori set of special tokens to increase the effectiveness of our regular expressions. The new tokens need to be general enough Hence, we utilize  each constant tag value in the examples provided by the expert as different tokens, in addition to the normal tokens described above. 
+As an example, consider the sensor name 
+This is more general than treating 
+Also, the tag values appearing in the themselves have to be different enough to warrant classification
+
+
+\subsubsection{Splitting constant tags}
+
+It may happen that a tag has multiple constant values for different points in the same building. For instance, in our test building, 
+
+
+\subsubsection{Variable tags}
+Tags with variable values have to be strongly guarded against wrong application against a sensor point. To achieve this, we tie the tags with variable values to its corresponding constant tag partner. For example,  
+
+
+\subsubsection{Modifying Boolean Classifiers}
+To preclude matching on to a sensor name where a constant tag will fail, we ensure that each clause in the DNF form has an equality on the constant tag value. 
+
+
+
+\subsubsection{Modifying Matching expression}
+To make the classifiers more general, so that regular expressions learnt for one building may be applicable to sensor names of other buildings with a similar naming convention, we augment the language to include Match arguments where it evaluates to true iff the regular expression is satisfied at position equal to k. For instance, a building could be labelled ANV, and the expression learnt for air handler would not work because the token A will be matched more than once. 
 
 
 
 
-We make four design decisions to adapt the algorithm to our setting. First, we augment the set of tokens that regular expressions normally use (one token denoting an alphabetic character, one token denoting a numeric character, and a separate token for each special character), to include one token for each constant value indicated by the expert. We did this because using the non-augmented token set is not expressive enough to extract the desired substrings (as will be shown in Figure~\ref{}). Second, 
 
-Second, instead of optimizing for the minimum number of partitions that describe a tag's string extraction rules over all inputed examples, we choose an online approach which just greedily intersects the string extraction expressions from a new example with the existing partition with which it has the maximum overlap. 
-This is done to minimize overhead in an online setting , where the number of existing examples might be large ( it takes more than 100 examples to fully qualify all the sensor names on the buildings we tested our technique on ). 
+%We make four design decisions to adapt the algorithm to our setting. First, we augment the set of tokens that regular expressions normally use (one token denoting an alphabetic character, one token denoting a numeric character, and a separate token for each special character), to include one token for each constant value indicated by the expert. We did this because using the non-augmented token set is not expressive enough to extract the desired substrings (as will be shown in Figure~\ref{}). Second, 
+%
 
-
-\subsection{Our adaptation}
-
-The high-level logic of our algorithm is adapted from ~\cite{gulwani}, which implemented learning simple regular expressions to transform input columns to a desired output column in a spreadsheet. The main aim of the technique is to learn two sets of information from the inputed examples --- (a) whether a particular tag is applicable on a particular sensor name, and (b) what is the set of regular expression which will give it the alpphanumeric characters corresponding to that tag. 
-
-From each expert-provided example and for each tag in that example, we compute the set of all expressions from our language (shown in Figure~\ref{language}), that could extract the required substring from that sensor name. The language defines the rules to apply regular expressions to extract required substrings from a string. If the same tag is present in more than one example, the tag's new extraction expression is the intersection of it's the extraction expression sets  for each of those examples. If the extraction expression sets cannot be intersected, they are maintained as two disjoint sets, which we shall hereby term as a {\it partitions}. The intuition behind intersecting the extraction expression sets is that as more examples containing a particular tag is seen, the extraction expressions get more and more concise. 
-
-Then, for each disjoint set of extraction expressions for each tag, a boolean classifier is built in the DNF form, to differentiate the examples containing that particular tag, from all the remaining examples. When a new sensor name is seen, the classifier is applied on it to check whether that tag is applicable on it, and if so, then the extraction expressions corresponding to the classifier is applied on the sensor name. 
-
-
-\subsection{final output - project Haystack}
-
-final output maybe in any form. 
-we realized going into this soon that not all tags conformed to any known schema. 
-For the general tags like room, ahu, vav we have conformed to the project haystack ones. 
-for the remainder of the points which are building specific, we just require that a person uses a consistent schema. 
-
-
-Boosting the metadata can enable better usability across buildings. The question automatically becomes which metadata space to normalize to. There are many metadata schemes devised for representing all buildings. Some of them are too specific and require heavy lifting, and some of them are too simple and do not meet the criteria of being expressive enough for the necessary facets of a building. 
-
-
-The goal is to normalize the existing metadata. 
-
-\subsection{Technique Overview}
-
-The synthesis technique is adapted from ~\cite{gulwani}, and tries to learn the regular expressions which 
-
-of our technique is to provide building-specific experts the ability to come up with ur technique tried to learn the regular expression patterns that 
-\subsection{learning by example}
-
-
-
--The basic structure of our technique is derived from gluwani.
--The goal is to 
-
-Our proposed technique is derived from the synthesis technique developed in ~\cite{}. In this section, we provide an overview of the technique, and then we will introduce how we adapt this technique to our problem. \\
-
-%\centerline{Atomic expr $f$ :=  \bf{SubStr}$(v_{i}, p_1, p_2)$}
-%\centerline{Position $p$ := $k$ | \bf{pos}$(r_1,r_2, c)$}
-%\centerline{Regular exp $r$ := $\epsilon$ | $\tau$ | \bf{TokenSeq}$(\tau_1 ...  \tau_n)$} 
-
-
-Atomic expr $f$ :=  {\bf SubStr}$(v_i, p_1, p_2)$ 
-
-Position $p$ := $k$ | {\bf pos}$(r_1,r_2, c)$ 
-
-Regular exp $r$ := $\epsilon$ | $\tau$ | {\bf TokenSeq} $(\tau_1 ...  \tau_n)$ \\
-
-
-
-
-As an example, consider that we have to extract \texttt{ART} from \texttt{BLDA1R465\_\_ART}, the substring expression can be written as {\bf SubStr}$(s, -3, -14)$, or {\bf SubStr}$(s,$ {\bf Pos()}
-
-
-
-
- way we learn regular expressions from inputs provided by the expert. We shall use the example scada tag {\tt BLDA1R465  ART} as a goto example throughout this section.
-
-In the following sections, we will use the word {\it token} to refer a token from a character class. So a token might be is a character or a group of characters in a point to be expanded. In the For instance, in the point {\tt BLDA1R465 ART} has the tokens as shown in Figure~\ref{fig:exampleInput}
-
-
-\subsubsection{Inputs}
-
-For every example an expert provides, we require three types of information - (a) the normalized metadata tag which is contained in the point name,  (b) the mapping of the labels in the data to normalized metadata tags , (c) the starting point of those labels, and (d) whether the value of the label is a constant or variable. For instance, consider the expert is asked to fully qualify the sensor point name \texttt{BLDA1R435\_\_ART}. Shown below is the expected input by the user.
-
-
-
-The aim of the learning algorithm would then be to fully qualify the remaining examples
-
-
-
-Whenever the expert types in the explanation for an input, we require that the expert give a full description of the point. The full description of a point consist of the haystack tags the point contains, the starting and ending position of the string that correspond to the haystack tag, mentioning whether the substring is a constant or is variable. For instance, in our example, {\tt BLD} is a constant for the haystack tag {\bf site}, but {\tt 465} is a variable substring, because the tag value will change from point to point. 
-
-
-are the tokens contained in a tag, their starting and ending positions, whether the tag has an associated value, and whether the associated value 
-
-\subsection{challenges}
-
-
--different types of points all together in the same corpus, and it is not one or two . you have to generate a regex classifier for all known tags. 
--tokens vary from building to building -> so no pre-defined token ( alternative were using Excel's stuff or treating every letter as an individual token ). Show the experiment that shows the number of incorrectly qualified vs number of examples added.
--simplest classifier to more complex classifier
-
-
-
-\subsection{technique we chose and modifications}
-
-learning by input output example
-- subtring generation
--intersection
--predicate generation
-
+%Second, instead of optimizing for the minimum number of partitions that describe a tag's string extraction rules over all inputed examples, we choose an online approach which just greedily intersects the string extraction expressions from a new example with the existing partition with which it has the maximum overlap. 
+%This is done to minimize overhead in an online setting , where the number of existing examples might be large ( it takes more than 100 examples to fully qualify all the sensor names on the buildings we tested our technique on ). 
+%
+%
+%\subsection{Our adaptation}
+%
+%The high-level logic of our algorithm is adapted from ~\cite{gulwani}, which implemented learning simple regular expressions to transform input columns to a desired output column in a spreadsheet. The main aim of the technique is to learn two sets of information from the inputed examples --- (a) whether a particular tag is applicable on a particular sensor name, and (b) what is the set of regular expression which will give it the alpphanumeric characters corresponding to that tag. 
+%
+%From each expert-provided example and for each tag in that example, we compute the set of all expressions from our language (shown in Figure~\ref{language}), that could extract the required substring from that sensor name. The language defines the rules to apply regular expressions to extract required substrings from a string. If the same tag is present in more than one example, the tag's new extraction expression is the intersection of it's the extraction expression sets  for each of those examples. If the extraction expression sets cannot be intersected, they are maintained as two disjoint sets, which we shall hereby term as a {\it partitions}. The intuition behind intersecting the extraction expression sets is that as more examples containing a particular tag is seen, the extraction expressions get more and more concise. 
+%
+%Then, for each disjoint set of extraction expressions for each tag, a boolean classifier is built in the DNF form, to differentiate the examples containing that particular tag, from all the remaining examples. When a new sensor name is seen, the classifier is applied on it to check whether that tag is applicable on it, and if so, then the extraction expressions corresponding to the classifier is applied on the sensor name. 
+%
+%
+%\subsection{final output - project Haystack}
+%
+%final output maybe in any form. 
+%we realized going into this soon that not all tags conformed to any known schema. 
+%For the general tags like room, ahu, vav we have conformed to the project haystack ones. 
+%for the remainder of the points which are building specific, we just require that a person uses a consistent schema. 
+%
+%
+%Boosting the metadata can enable better usability across buildings. The question automatically becomes which metadata space to normalize to. There are many metadata schemes devised for representing all buildings. Some of them are too specific and require heavy lifting, and some of them are too simple and do not meet the criteria of being expressive enough for the necessary facets of a building. 
+%
+%
+%The goal is to normalize the existing metadata. 
+%
+%\subsection{Technique Overview}
+%
+%The synthesis technique is adapted from ~\cite{gulwani}, and tries to learn the regular expressions which 
+%
+%of our technique is to provide building-specific experts the ability to come up with ur technique tried to learn the regular expression patterns that 
+%\subsection{learning by example}
+%
+%
+%
+%-The basic structure of our technique is derived from gluwani.
+%-The goal is to 
+%
+%Our proposed technique is derived from the synthesis technique developed in ~\cite{}. In this section, we provide an overview of the technique, and then we will introduce how we adapt this technique to our problem. \\
+%
+%%\centerline{Atomic expr $f$ :=  \bf{SubStr}$(v_{i}, p_1, p_2)$}
+%%\centerline{Position $p$ := $k$ | \bf{pos}$(r_1,r_2, c)$}
+%%\centerline{Regular exp $r$ := $\epsilon$ | $\tau$ | \bf{TokenSeq}$(\tau_1 ...  \tau_n)$} 
+%
+%
+%Atomic expr $f$ :=  {\bf SubStr}$(v_i, p_1, p_2)$ 
+%
+%Position $p$ := $k$ | {\bf pos}$(r_1,r_2, c)$ 
+%
+%Regular exp $r$ := $\epsilon$ | $\tau$ | {\bf TokenSeq} $(\tau_1 ...  \tau_n)$ \\
+%
+%
+%
+%
+%As an example, consider that we have to extract \texttt{ART} from \texttt{BLDA1R465\_\_ART}, the substring expression can be written as {\bf SubStr}$(s, -3, -14)$, or {\bf SubStr}$(s,$ {\bf Pos()}
+%
+%
+%
+%
+% way we learn regular expressions from inputs provided by the expert. We shall use the example scada tag {\tt BLDA1R465  ART} as a goto example throughout this section.
+%
+%In the following sections, we will use the word {\it token} to refer a token from a character class. So a token might be is a character or a group of characters in a point to be expanded. In the For instance, in the point {\tt BLDA1R465 ART} has the tokens as shown in Figure~\ref{fig:exampleInput}
+%
+%
+%\subsubsection{Inputs}
+%
+%For every example an expert provides, we require three types of information - (a) the normalized metadata tag which is contained in the point name,  (b) the mapping of the labels in the data to normalized metadata tags , (c) the starting point of those labels, and (d) whether the value of the label is a constant or variable. For instance, consider the expert is asked to fully qualify the sensor point name \texttt{BLDA1R435\_\_ART}. Shown below is the expected input by the user.
+%
+%
+%
+%The aim of the learning algorithm would then be to fully qualify the remaining examples
+%
+%
+%
+%Whenever the expert types in the explanation for an input, we require that the expert give a full description of the point. The full description of a point consist of the haystack tags the point contains, the starting and ending position of the string that correspond to the haystack tag, mentioning whether the substring is a constant or is variable. For instance, in our example, {\tt BLD} is a constant for the haystack tag {\bf site}, but {\tt 465} is a variable substring, because the tag value will change from point to point. 
+%
+%
+%are the tokens contained in a tag, their starting and ending positions, whether the tag has an associated value, and whether the associated value 
+%
+%\subsection{challenges}
+%
+%
+%-different types of points all together in the same corpus, and it is not one or two . you have to generate a regex classifier for all known tags. 
+%-tokens vary from building to building -> so no pre-defined token ( alternative were using Excel's stuff or treating every letter as an individual token ). Show the experiment that shows the number of incorrectly qualified vs number of examples added.
+%-simplest classifier to more complex classifier
+%
+%
+%
+%\subsection{technique we chose and modifications}
+%
+%learning by input output example
+%- subtring generation
+%-intersection
+%-predicate generation
+%
 
 
 \section{Evaluation of Learning By Example}
 
 In this section, we guage the effectiveness of our learning by example technique by evaluating the number of examples required to qualify labels in two large commercial buildings. 
 
-\subsection{Test Buildings for Evaluation}
+\subsection{Testbed}
 
 We manually generated ground truth data for all the points in two buildings whose building management system was installed by different vendors. Building $1$ has 1586 sensor points and was built in the 1990s. Building $2$ was built in the 2000s and has 2551 sense points. The label characteristics of the two buildings are shown in Figure~\ref{fig:buildingLabelCharacteristics}. 
 
@@ -225,12 +260,6 @@ The distribution frequency of labels also has a long tail. For both the building
 \caption{Characteristics of labels from two buildings we generated ground-truth data to test our learning technique}
 \label{fig:buildingLabelCharacteristics}
 \end{figure}
-
-
-
-\subsection{Convergence of labels}
-
-
 
 
 
@@ -276,6 +305,23 @@ We wrote a script that automatically gave the learning algorithm the example tha
 
 \subsection{applying to other buildings}
 
+\begin{figure}[h!]
+\centering
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/campusWideStats.pdf}
+                \caption{Building 1}
+                \label{fig:active-learning-soda}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/recallCampusWide.pdf}
+                \caption{Building 2}
+                \label{fig:active-learning-sdh}
+	\end{subfigure}
+\caption{The number of examples required to fully qualify 70\% of sensor names in two buildings}
+\label{fig:active-learning}
+\end{figure}
 
 
 
