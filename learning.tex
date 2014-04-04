@@ -130,8 +130,6 @@ In the example we showed earlier, the set of regular expressions were not powerf
 
 Hence, we utilize the constant tag values in the examples provided by the expert as different tokens, in addition to the normal tokens described above. Thus, a sensor name \texttt{BLDA1R465\_\_ART} is treated as a set of tokens [ (BLD)(A)[0-9](R)[0-9]+ UnderscoreTok UnderscoreTok (ART) ], and the sensor name \texttt{BLD2.PWR.CL42A.REACTIVE POWER} is treated as a combination of tokens [ (BLD2) dotTok (PWR) dotTok [A-Z]+[0-9]+[A-Z] dotTok (REACTIVE POWER). All the regular expressions generated for a sensor name utilize this token structure. Note that this is able to differentiate between both the sensor points in the example above. 
 
-% XXX show example
-
 \subsubsection{Splitting constant tags}
 
 In order to improve the efficiency of the classifier, we consider a tag having multiple constant values, as different tags. For instance, in our test building, an {\it exhaust fan} tag was applicable either as the constant character \texttt{E} or the constant character \texttt{EF}. Note that the index of the various other tag's values in a sensor name change depending on which of the constant value appears, rendering the Cpos(k) operator useless. 
