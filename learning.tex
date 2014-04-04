@@ -19,9 +19,17 @@ In this section, we go into detail about how we apply program synthesis techniqu
 
 The expert is expected to point out \emph{(Tag Name, Tag Value, Value Type)} tuples in the sensor name. A {\it tag} is mapped on to a substring of the sensor name, which is called its {\it value}. A tag can have a constant or a variable value. A value should be regarded a constant if it is not specific to that particular sensor. 
 
-{\it Sample Input:} Suppose the expert is presented with an example \texttt{BLDA1R465\_\_ART}, he should qualify it in order as \emph{(site,BLD,const), (ahu,A,const), (ahuRef,1,var), (zone,R,const), (zoneRef,465,var), (zone air temp sensor,ART,const)}. In this example the {\bf site} tag's value is \texttt{BLD}, which is not specific to that particular sensor. Hence, the expert should mark it as a constant. On the other hand, the value of the {\bf ZoneRef} tag is specific to that sensor, and hence should be marked as variable.
+{\it Sample Input:} Suppose the expert is presented with an example \texttt{BLDA1R465\_\_ART}, he should qualify it in order as
 
-{\it Output:} The synthesis technique should then be able to identify the tags in the sensor name \texttt{BLDA5R234\_\_\_ART}, and output the set of tuples \emph{(site,BLD), (ahu,A), (ahuRef,5), (zone,R), (zoneRef,465), (zone air temp sensor,ART)}. We term each of these tuples as a {\it qualification}, because it qualifies a set of alphanumeric characters into normalized metadata tags. We term the output as a {\it full qualification}, if every alphanumeric character in the sensor name was {\it qualified} by the set of outputed {\it tags}.
+ \texttt{BLDA1R465\_\_ART} : (site, \texttt{BLD}, const), (ahu, \texttt{A}, const), (ahuRef,\texttt{1}, var), (zone,\texttt{R}, const), (zoneRef, \texttt{465}, var), (zone air temp sensor, \texttt{ART}, const). 
+
+In this example the {\bf site} tag's value is \texttt{BLD}, which is not specific to that particular sensor. Hence, the expert should mark it as a constant. On the other hand, the value of the {\bf ZoneRef} tag is specific to that sensor, and hence should be marked as variable.
+
+{\it Sample Output:} The synthesis technique should then be able to identify the tags in a new sensor name automatically. For example, given the sensor name \texttt{BLDA5R234\_\_\_ART}, it should output the set of tuples shown below:
+
+\texttt{BLDA5R234\_\_\_ART} : (site, \texttt{BLD}), (ahu,\texttt{A}), (ahuRef,\texttt{5}), (zone,\texttt{R}), (zoneRef,\texttt{465}), (zone air temp sensor,\texttt{ART}).
+
+We term each of these tuples as a {\it qualification}, because it qualifies a set of alphanumeric characters into normalized metadata tags. We term the output as a {\it full qualification}, if every alphanumeric character in the sensor name was {\it qualified} by the set of outputed {\it tags}.
 
 
 \subsection{Synthesis technique overview}
@@ -64,7 +72,17 @@ The Substring expression {\bf SubStr}$(v_i,p_1,p_2)$, evaluates to the substring
 
 The intuition behind adapting this set of techniques to our context is by considering each {\it tag} as a potential output for a given sensor name. From each given example and for each tag in that example, we can compute the set of all expressions from the language that could extract the required substring from that sensor name. If the same tag is present in multiple examples, the tag's new extraction expression is the intersection of it's extraction expression sets for each of those examples. This may result in disjoint {\it partitions} for each tag. Finally, a boolean classifier is built to differentiate examples of each partition from all other provided examples. 
 
-However, directly adapting this technique to the sensor naming runs into problems. We ran the technique as-is on one of the buildings in our data set, and the results are shown in Figure~\ref{fig:simpleTokenNoCoverage}.
+However, directly adapting this technique to the sensor naming runs into problems. We conducted an experiment where we provided examples for sensor names in a building containing 1585 sense points, applying the technique with no adaptation. Sensor names were chosen at random from the corups of all sensor names, and a full qualification of it was provided as the next input. Figure~\ref{fig:simpleTokenNoCoverage} shows the result of our experiment.
+
+We would expect the percentage of sensor names to increase with each added example. We find this trend up to around 25 examples, after which the synthesis technique started adding qualifying substrings of the sensor name to erroneous tags. At closer inspection, it turns out that the tokens  (one for alphabetic characters, one for numeric characters, and one for each special character) used by the regular expressions and the {\bf Match} predicates were not expressive enough to capture the difference of applicability of different tags. 
+
+To illustrate the problem, consider the examples 
+
+{\it Example 1} : \texttt{BLDA4S1831\_STA} : [ (site, \texttt{BLD}, const), (ahu, \texttt{A}, const), (ahuRef,\texttt{4}, var), (supply fan,\texttt{S}, const), (supply fanRef,\texttt{1831}, var), (status point,\texttt{STA},const) ] ; and 
+
+{\it Example 2}: \texttt{BLDA3R5871\_VAV} : [ (site, \texttt{BLD}, const), (ahu, \texttt{A}, const), (ahuRef, \texttt{3}, var), (zone, \texttt{R}, const), (zoneRef, \texttt{5871}, var), (vav, \texttt{VAV}, const) ]
+
+Both these sensor names have the exact same arrangement of numeric and alphabetic characters, and special symbols, and no regular expression used by {\bf Match}$(v_i,r,c)$  would be able to discern between the two. The result would either be both tags being mapped to the same substring in an effort to qualify it, or neither. Hence, we modify the existing language and set of tokens to stay general enough, yet be more expressive.
 
 \begin{figure}[h!]
   
@@ -73,6 +91,10 @@ However, directly adapting this technique to the sensor naming runs into problem
 \caption{Number of sensor names fully qualified with a token set consisting simply of alphabetic characters [A-Z], numerals [0-9], and one token for each special character.}
 \label{fig:simpleTokenNoCoverage}
 \end{figure}
+
+\subsubsection{Adding New Tokens}
+
+
 
 
 We make four design decisions to adapt the algorithm to our setting. First, we augment the set of tokens that regular expressions normally use (one token denoting an alphabetic character, one token denoting a numeric character, and a separate token for each special character), to include one token for each constant value indicated by the expert. We did this because using the non-augmented token set is not expressive enough to extract the desired substrings (as will be shown in Figure~\ref{}). Second, 
