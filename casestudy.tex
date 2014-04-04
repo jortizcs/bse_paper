@@ -21,7 +21,7 @@ We implement two applications and perform the analysis on two buildings from a c
 	% 	\includegraphics[width=\textwidth]{./figs/Rice_new.eps}
  %                \caption{Building C}
 	% \end{subfigure}
-\caption{For each building, we present the distribution of temperature deviations between: a) room temperature and the corresponding setpoint (solid), b) room temperature and the comfort range suggested by ASHRAE (dashed), c) room temperature setpoint and the ASHARE comfort suggestion (dotted).}
+\caption{For each building, the distribution describes the temperature deviation between: a) room temperature and the corresponding setpoint (solid), b) room temperature and the comfort range suggested by ASHRAE (dashed), c) room temperature setpoint and the ASHARE comfort suggestion (dotted).}
 \label{fig:cdf_temp}
 \end{figure*}
 
@@ -59,7 +59,7 @@ It's not unusual to have rooms in a building stay extremely cold or hot thus mak
 	\cline{1-4}
 	\end{tabular}
  \end{center}
- \caption{We rank the rooms in each buidling by how much time they are uncomfortable throughout the one week period, and we list the first ten rooms in each building.}
+ \caption{Rooms in each buidling are ranked by how much time they are uncomfortable throughout the one week period, and the first ten rooms in the ranking of each building are listed.}
  \label{tab:uncmft}
 \end{table}
 
@@ -82,7 +82,7 @@ Figure~\ref{fig:cdf_temp} presents the ground truth of temperature deviation dis
                 \label{fig:soda_zone2}
 
 	\end{subfigure}
-\caption{Breakdown of uncomfortable and rogue rooms for Building 1. Uncomfortable rooms are those whose temperature once exceeds the comfort range suggested by ASHRAE. Rogue rooms are those whose temperature deviates from the setpoint more than 3 Celsius degree. We assign the rooms to the corresponding air hanlder unit zone: for each zone, we show the number of rooms in the zone, the number of zones at least once meets the criteria, and the number of rooms that meet the criteria in more than 80\% of the one-week period.} 
+\caption{Breakdown of the uncomfortable and rogue rooms in building 1 by air handler unit zone. Uncomfortable rooms are those whose temperature at least once exceeds the comfort range suggested by ASHRAE. Rogue rooms are those whose temperature deviates from the setpoint more than 3 Celsius degree. For each zone, we show the number of rooms in it, the number of zones at least once meets the criteria, and the number of rooms that meet the criteria in more than 80\% of the one-week period.} 
 \end{figure*}
 
 \subsection{Rogue Rooms}
@@ -142,7 +142,7 @@ Heating and cooling contribute to the largest portion of energy consumption of a
 \subsection{How Many Rooms are Missed?}
 The metadata expansion contains certain errors therefore when we do a search over the expanded metadata we might not get all the desired streams for analysis. Figure~\ref{fig:error} shows the error rates of the search results over expanded metadata for the two test bed buildings. On the left, 50\% of the metadata of building 1 was correctly fully expanded, and doing the two searches for ``room temperature'' and ``room temperature setpoint'' will get us all the desired streams. Therefore, performing the uncomfortable and rogue rooms analysis will not miss any rooms. Meanwhile, for building 2 on the right, when 50\% of the metadata is correctly fully expanded, we missed X and Y streams for the same two searches respectively. Since not all of the X rooms are necessarily uncomfortable or rogue, we missed P and Q rooms for the two applications as a result.
 
-With the expanded and normalized metadata of a building, we can run useful analysis and identify potential problems in the building. Even though the exapnsion has errors in it, we are still able to find most of the problematic rooms.
+With the expanded and normalized metadata of a building, we can run useful analysis and identify potential problems in the it. Even though the exapnsion has errors in it, we are still able to find most of the problematic rooms.
 
 \begin{figure*}[h!]
 \centering
@@ -156,7 +156,7 @@ With the expanded and normalized metadata of a building, we can run useful analy
 		\includegraphics[width=\textwidth]{./figs/50-sdh.eps}
                 \caption{Building 2}
 	\end{subfigure}
-\caption{The error rates of searches over the expanded metadata using our techniques. We do two searches particularly: ``room temp'' and ``room temp setpoint''.}
+\caption{The error rates of searches over the expanded metadata using our techniques. Two searches are performed particularly: ``room temp'' and ``room temp setpoint''.}
 \label{fig:error}
 \end{figure*}
 
@@ -169,6 +169,6 @@ Uncmft               & \multicolumn{1}{|c}{0} & \multicolumn{1}{|c|}{4} \\ \clin
 Rogue                & \multicolumn{1}{|c}{0} & \multicolumn{1}{|c|}{5} \\ \cline{2-3} 
 \end{tabular}
  \end{center}
- \caption{Ground truth for how much time each room's temperature deviates from the setpoint more than 3 Celsius degree. For each building, the first column is room number and the second column shows the percentage of the one-week time that the room deviates that much.}
+ \caption{The number of missed rooms for the two applications for the two test bed buildings.}
  \label{tab:cluster}
 \end{table}
