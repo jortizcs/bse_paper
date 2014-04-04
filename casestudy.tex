@@ -1,87 +1,174 @@
 \section{Case Study}
-In this section, we demonstrate that with the metadata automatically normalized and expanded using the techniques in previous section, we are able to implement a few applications that are generalizable from one building to another building without modification. As a proof of cncept, we implment two applications: a) identify the uncomfortable rooms and b) detect rogues rooms. We also evaluate the metadata expansion technique in terms of the accuracy for both applications compared against the gorund truth. 
+In this section, we demonstrate that with the metadata automatically expanded and normalizedusing the techniques in section~\ref{}, we are able to implement applications that are generalizable from one building to another building without modification. As a proof of concept, we implment two applications on the two building as test bed: a) identify uncomfortable rooms and b) detect rogue rooms. We also evaluate the metadata expansion technique in terms of the accuracy for both applications compared against the ground truth. 
 
 \subsection{Experimental Setup}
-We implement two applications and perform the analysis on three buildings from two campuses, and each building is installed with a different management system. Building A and B are from the same campus on the west coast while buidling C is from a second campus on the east coast. Building A was built in mid-1990s using the system from Barrington ~\cite{}. Building B was recently built in 2005 using the Siements BACnet system~\cite{}. Building C is the newest building among the three installed with Trane's system~\cite{}, which was put into use from 2011. We collected temperature data as well as setpoint of the rooms in each building. And the data used from each building for analysis is from one week in June 2009, January 2012 and June 2013 respectively.
+We implement two applications and perform the analysis on two buildings from a campus, and each building is installed with a different management system. Building A was built in mid-1990s using the system from Barrington~\cite{}. Building B was recently built in 2004 installed with the Siements BACnet system~\cite{}. We used the temperature data as well as setpoint information of the rooms in each building. The temperature measurements are reported every 15 seconds and the data used for analysis is from one week in June 2009 and January 2012 respectively.
 
-\begin{figure*}[h]
+\begin{figure*}[h!]
 \centering
-	\begin{subfigure}{0.32\textwidth}
+	\begin{subfigure}{0.48\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/Soda_new.eps}
-                \caption{Building A}
+                \caption{Building 1}
 	\end{subfigure}
-	\begin{subfigure}{0.32\textwidth}
+	\begin{subfigure}{0.48\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/SDH_new.eps}
-                \caption{Building B}
+                \caption{Building 2}
 	\end{subfigure}
-	\begin{subfigure}{0.32\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/Rice_new.eps}
-                \caption{Building C}
-	\end{subfigure}
-\caption{For each building, we present the distribution of temperature deviation between: a) room temperature and the corresponding setpoint (in blue), b) room temperature and the comfort range suggested by ASHRAE (in red), c) room temperature setpoint and the ASHARE comfort suggestion (in black).}
-\label{fig:cdf_temp}
-\end{figure*}
-
-\begin{figure*}[h]
-\centering
-	\begin{subfigure}{0.48\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/50-soda.eps}
-                \caption{Building A}
-	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/50-sdh.eps}
-                \caption{Building B}
-	\end{subfigure}
-\caption{The error rates of searches over the expanded metadata using our techniques. We do two searches particularly: ``room temp'' and ``room temp setpoint''.}
+	% \begin{subfigure}{0.32\textwidth}
+ %                \centering
+	% 	\includegraphics[width=\textwidth]{./figs/Rice_new.eps}
+ %                \caption{Building C}
+	% \end{subfigure}
+\caption{For each building, the distribution describes the temperature deviation between: a) room temperature and the corresponding setpoint (solid), b) room temperature and the comfort range suggested by ASHRAE (dashed), c) room temperature setpoint and the ASHARE comfort suggestion (dotted).}
 \label{fig:cdf_temp}
 \end{figure*}
 
 \subsection{Uncomfortable Rooms}
-It's not unusual to have rooms in a building stay extremely cold or hot thus making the occupants uncomfortable as well as incurring energy waste. The uncomfort are usually caused by improper setpoint settings or dysfunciton of the HVAC systems, and being able to identify these uncomfortable zones or rooms in the building is vital to occupant comfort as well as potential energy savings. With the metadata normalized using our techniques, we are able to search for the desired streams, e.g., the temperature and setpoint of a room,  and analyse the thermal performance across different buildings despite of the different naming schema of the sensor or ``points''.
+It's not unusual to have rooms in a building stay extremely cold or hot thus making the occupants feel uncomfortable and incurring energy waste. The discomfort is usually caused by improper setpoint configuration or dysfunciton of the HVAC systems, and being able to identify these uncomfortable zones or rooms in the building is vital to improve occupant comfort as well as achieve potential energy savings. With the metadata normalized using our techniques, we are able to search for the desired streams, e.g., the temperature and setpoint of a room, and analyse the thermal performance of different buildings despite of the different naming schema used to label sensors and meters.
 
-To identify potential uncomfort in a building, for each room we are particularly interested in a) how much does the temperture deviate from the comfort range? b) how much does the temperature deviate from the setpoint? c) how much does the setpoint deviate from the comfort range? To answer these questions, we first search over the points in each building for distinct temperature stream of each room and the corresponding setpoint. And then we compare the temperature with setpoint as well as the suggested comfort range from ASHRAE~\cite{} to compute the temperature deviations in the aforementioned three different perspectives in the one-week period. We accumulate the results from all the rooms per building and generate the CDF as shown in Figure~\ref{}. Each graph illustrates how much the temperature of a building deviates from the comfort range, the setpoint and also, how much the setpoint by itself deviates from the comfort rage. On average, each buidling is uncomfortable to some degree and we rank the rooms in each building by how much they deviates from the comfort zone and the ranking is shown in Table~\ref{}. We also present the ground truth of temperature deviation distribution in Figure~\ref{fig:cdf_temp}, where we manually find temperature and setpoint streams for all the rooms to do the same analysis and generate the graphs. The ground truth analysis covers all the rooms in each building so all the potential uncomfortable rooms will be identified while the analysis using the name points expanded with our techniques would miss some of the uncomfortable rooms, since the expansion contains certain error rates.
-
-\subsection{Rogue Rooms}
-Heating and cooling contribute to the largest portion of energy consumption of a buidling, and often, HVAC system operates abnormally either because the system fails itself or the schedule of the buidling is problematic. And there are often some zones and rooms in a building that are constantly cold or hot than their neighbors and incur energy waste. We showed the temeprature deviations above, and we are particularly interested in the periods when a room deviates from the setpoint more than 3 Celsius degree, which is highly likely to indicate that the room is under either heating or coolong. Therefore, for each building, we zoom in to the interested portion and find the rooms whose percentage of time that falls into the interested area is extremely high, i.e., which room's temperature deviates from the setpoint more than 3 Celsius degree in most of the time, and the results are summarized in Table~\ref{}. Again, the grounf truth results are listed in Table~\ref{} as comparison.
-
-\begin{table}[h!]
+\begin{table}[ht!]
 %\footnotesize
  \begin{center}
-	\begin{tabular}{|c|c|c|c|c|c|}
-	\multicolumn{2}{c}{$Bldg A$}
-	 & \multicolumn{2}{c}{$Bldg B$}
-	  & \multicolumn{2}{c}{$Bldg C$} \\
-	\cline{1-6} 
-	 room\# & \% & room\# & \% & room\# & \%\\
-	\cline{1-6}
-	 330B & 1 & S3-6 & 1 & 501 & 1\\
-	\cline{1-6}
-	 340 & 1 & S2-1 & 1 & 502 & 1\\
-	\cline{1-6}
-	420A & 1 & S1-2 & 0.93 & 504 & 1\\
-	\cline{1-6}
-	420 & 1 & S7-16 & 0.67 & 557 & 1\\
-	\cline{1-6}
-	698 & 1 & S3-13 & 0.62 & 511A & 1\\
-	\cline{1-6}
-	442 & 0.996 & S4-15 & 0.62 & 532 & 1\\
-	\cline{1-6}
-	398 & 0.981 & S5-5 & 0.57 & 224 & 1\\
-	\cline{1-6}
-	336 & 0.96 & S4-1 & 0.54 & 506 & 1\\
-	\cline{1-6}
-	183 & 0.92 & S5-16 & 0.48 & 507 & 1\\
-	\cline{1-6}
-	498 & 0.91 & S5-7 & 0.47 & 511B & 1\\
-	\cline{1-6}
-
+	\begin{tabular}{|c|c|c|c|}
+	\multicolumn{2}{c}{$Bldg 1$}
+	 & \multicolumn{2}{c}{$Bldg 2$}\\
+	\cline{1-4} 
+	 room\# & \% & room\# & \%\\
+	\cline{1-4}
+	 326 & 1 & S3-6 & 1\\
+	\cline{1-4}
+	 340 & 1 & S2-1 & 1\\
+	\cline{1-4}
+	352 & 1 & S1-2 & 0.72\\
+	\cline{1-4}
+	364 & 1 & S6-09 & 0.54\\
+	\cline{1-4}
+	376A & 1 & S7-16 & 0.49\\
+	\cline{1-4}
+	380 & 1 & S4-15 & 0.45\\
+	\cline{1-4}
+	384 & 1 & S6-10 & 0.44\\
+	\cline{1-4}
+	405A & 1 & S7-10 & 0.42\\
+	\cline{1-4}
+	405B & 1 & S5-15 & 0.35\\
+	\cline{1-4}
+	410A & 1 & S5-13 & 0.29\\
+	\cline{1-4}
 	\end{tabular}
  \end{center}
- \caption{We present the rooms in each building whose temperature deviates from the setpoint more than 3 Celsius degree. For each building, the first column is room number and the second column shows the percentage of the one-week time that the room deviates that much.}
+ \caption{Rooms in each buidling are ranked by how much time they are uncomfortable throughout the one week period, and the first ten rooms in the ranking of each building are listed.}
+ \label{tab:uncmft}
+\end{table}
+
+To identify the discomfort in a building, for each room we are particularly interested in a) how much does the temperture deviate from the comfort range? b) how much does the temperature deviate from the setpoint? c) how much does the setpoint deviate from the comfort range? To answer these questions, we first search through the points in each building for distinct temperature stream of each room and the corresponding setpoint. Then we compare the temperature with the setpoint as well as the suggested comfort range by ASHRAE~\cite{} to compute the temperature deviations from the aforementioned three different perspectives in one-week period. We accumulate the results from all the rooms per building and generate the distribution as illustrated in Figure~\ref{fig:cdf_temp}.
+
+Figure~\ref{fig:cdf_temp} presents the ground truth of temperature deviation distribution in Figure~\ref{fig:cdf_temp}, where we manually find the temperature and setpoint streams for all rooms and follow the above steps to generate the distributions. Each graph shows how much the temperature of a building deviates from the comfort range, the setpoint and how much the setpoint by itself deviates from the comfort range. On average, each buidling is uncomfortable to some degree and to better understand which specific rooms are uncomfortable, we rank the rooms in each building by how much they deviate from the comfort zone. The ranking results are shown in Table~\ref{tab:uncmft}. We also break the identified uncomfortable rooms down to their corresponding air handler unit, as shown in Figure~\ref{fig:soda_zone1}. The ground truth analysis covers all the rooms in each building, so all the potential uncomfortable rooms are identified here. However, the analysis using the name points expanded with our techniques would miss some of the uncomfortable rooms because the expansion contains certain error rates. We will show the error later.
+
+\begin{figure*}[h!]
+\centering
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/uncmft_soda.eps}
+                \caption{Uncomfortable Rooms}
+                \label{fig:soda_zone1}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/rogue_soda.eps}
+                \caption{Rogue Rooms}
+                \label{fig:soda_zone2}
+
+	\end{subfigure}
+\caption{Breakdown of the uncomfortable and rogue rooms in building 1 by air handler unit zone. Uncomfortable rooms are those whose temperature at least once exceeds the comfort range suggested by ASHRAE. Rogue rooms are those whose temperature deviates from the setpoint more than 3 Celsius degree. For each zone, we show the number of rooms in it, the number of zones at least once meets the criteria, and the number of rooms that meet the criteria in more than 80\% of the one-week period.} 
+\end{figure*}
+
+\subsection{Rogue Rooms}
+Heating and cooling contribute to the largest portion of energy consumption of a buidling, and often, HVAC system operates abnormally either because the system fails itself or the schedule of the building is problematic. And there are often some zones and rooms in a building that are constantly cold or hot than the neighbors thus incurring energy waste. We demonstrated the temeprature deviation distribution above, and we are particularly interested in the periods when a room deviates from the setpoint more than 3 Celsius degree, which indicates that the room is highly likely to be under either heating or cooling. Therefore, for each building, we zoom in to the interested portion and find the rooms falling into the interested area in most of the time, i.e., which room's temperature almost always deviates from the setpoint more than 3 Celsius degree, and the gorudn truth results are summarized in Table~\ref{tab:rogue}. Again, we group the rooms according to their air handler unit ID and get the results in Figure~\ref{fig:soda_zone2}.
+
+\begin{table}[ht!]
+%\footnotesize
+ \begin{center}
+	\begin{tabular}{|c|c|c|c|}
+	\multicolumn{2}{c}{$Bldg 1$}
+	 & \multicolumn{2}{c}{$Bldg 2$}\\
+	\cline{1-4} 
+	 room\# & \% & room\# & \%\\
+	\cline{1-4}
+	 330B & 1 & S3-6 & 1\\
+	\cline{1-4}
+	 340 & 1 & S2-1 & 1\\
+	\cline{1-4}
+	420A & 1 & S1-2 & 0.93\\
+	\cline{1-4}
+	420 & 1 & S7-16 & 0.67\\
+	\cline{1-4}
+	698 & 1 & S3-13 & 0.62\\
+	\cline{1-4}
+	442 & 0.996 & S4-15 & 0.62\\
+	\cline{1-4}
+	398 & 0.981 & S5-5 & 0.57\\
+	\cline{1-4}
+	336 & 0.96 & S4-1 & 0.54\\
+	\cline{1-4}
+	183 & 0.92 & S5-16 & 0.48\\
+	\cline{1-4}
+	498 & 0.91 & S5-7 & 0.47\\
+	\cline{1-4}
+	\end{tabular}
+ \end{center}
+ \caption{Ground truth for how much time each room's temperature deviates from the setpoint more than 3 Celsius degree. For each building, the first column is room number and the second column is the percentage of the one-week time that the room deviates that much.}
+ \label{tab:rogue}
+\end{table}
+
+% \begin{figure*}[h!]
+% \centering
+% 	\begin{subfigure}{0.48\textwidth}
+%                 \centering
+% 		\includegraphics[width=\textwidth]{./figs/rogue_soda.eps}
+%                 \caption{Building A}
+% 	\end{subfigure}
+% 	\begin{subfigure}{0.48\textwidth}
+%                 \centering
+% 		\includegraphics[width=\textwidth]{./figs/rogue_sdh.eps}
+%                 \caption{Building B}
+% 	\end{subfigure}
+% \caption{Dividing the rooms whose temperature once deviates from the setpoint more than 3 Celsius degree by HVAC zones: for each zone, we show the number of rooms in the zone, the number of zones once appears to be rogue, and the number of rooms that were rogues more than 80\% in the one-week period.} 
+% \label{fig:rogue}
+% \end{figure*}
+
+\subsection{How Many Rooms are Missed?}
+The metadata expansion contains certain errors therefore when we do a search over the expanded metadata we might not get all the desired streams for analysis. Figure~\ref{fig:error} shows the error rates of the search results over expanded metadata for the two test bed buildings. On the left, 50\% of the metadata of building 1 was correctly fully expanded, and doing the two searches for ``room temperature'' and ``room temperature setpoint'' will get us all the desired streams. Therefore, performing the uncomfortable and rogue rooms analysis will not miss any rooms. Meanwhile, for building 2 on the right, when 50\% of the metadata is correctly fully expanded, we missed X and Y streams for the same two searches respectively. Since not all of the X rooms are necessarily uncomfortable or rogue, we missed P and Q rooms for the two applications as a result.
+
+With the expanded and normalized metadata of a building, we can run useful analysis and identify potential problems in the it. Even though the exapnsion has errors in it, we are still able to find most of the problematic rooms.
+
+\begin{figure*}[h!]
+\centering
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/50-soda.eps}
+                \caption{Building 1}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/50-sdh.eps}
+                \caption{Building 2}
+	\end{subfigure}
+\caption{The error rates of searches over the expanded metadata using our techniques. Two searches are performed particularly: ``room temp'' and ``room temp setpoint''.}
+\label{fig:error}
+\end{figure*}
+
+\begin{table}[ht!]
+%\footnotesize
+ \begin{center}
+\begin{tabular}{rcc}
+\multicolumn{1}{l}{} & Bldg 1                 & Bldg 2                  \\ \cline{2-3} 
+Uncmft               & \multicolumn{1}{|c}{0} & \multicolumn{1}{|c|}{4} \\ \cline{2-3} 
+Rogue                & \multicolumn{1}{|c}{0} & \multicolumn{1}{|c|}{5} \\ \cline{2-3} 
+\end{tabular}
+ \end{center}
+ \caption{The number of missed rooms for the two applications for the two test bed buildings.}
  \label{tab:cluster}
 \end{table}
