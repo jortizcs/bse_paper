@@ -5,21 +5,22 @@ up to several thousand sensors reporting physical measurement, continuously.
 Moreover, with the recent interest in reducing building energy consumption and
 increasing their efficiency, it
 is important to consider ways to quickly bootstrap a set of building data streams
-into an anlytical pipeline.  These analyses consist of jobs that help give deeper
-insight into the overall performance of the building, 
-determine where there are opportunities for energy savings, and 
-discover broken sensors.
+into an anlytical pipeline.  These analyses consist of jobs that measure the performance
+of the building with respect to overall comfort, determine where there are 
+opportunities for energy savings by detecting rooms that drive the energy consumption down --
+also known and rogue rooms/zones -- and finding broken sensors. 
+
+Ideally, such analyses could be deployed across many buildings, quickly. 
 However, current `point' naming conventions and unsystematic recording of metadata form a 
 bottleneck in the scalability of the data integration process.  A `point' refers to a 
-physical location where
-a sensor is taking measurements. 
+physical location where a sensor is taking measurements. 
 %Each building vendor uses their own naming scheme and
 %unique variants of each scheme are implemented from building to building; variations exist
 %even across buildings that have contracted the same vendor.
-In addition, more descriptive information is sometimes unavailable to give detailed information
-about the meaning of the tags -- so determining their meaning is painfully slow or impossible.  
+In addition, expanded descriptive information about the point is sometimes unavailable 
+-- so determining their meaning is painfully slow or impossible.  
 Because these are conventions carried
-about by humans, they are inconsistent within and across building data sets.
+out by humans, they are inconsistent within and across building data sets.
 This makes the integration process laborious for building experts and a non-starter for 
 non experts.  %The process is fundamentally unscalable. 
 
