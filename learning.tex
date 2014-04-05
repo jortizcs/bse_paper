@@ -31,7 +31,7 @@ In this example the {\bf site} tag's value is \texttt{BLD}, which is not specifi
 
 We term each of these tuples as a {\it qualification}, because it qualifies a set of alphanumeric characters into normalized metadata tags. We term the output as a {\it full qualification}, if every alphanumeric character in the sensor name was {\it qualified} by the set of outputed {\it tags}.
 
-{\it Tag Names :} The goal of the expert should be to use tag names from a normalized building equipment taxonomy schema that has been widely adopted. Currently, there is no consensus schema in the sensor network, or building management system vendor community about a particular schema. Some schemas such as Green Building XML~\cite{}, and IFCs~\cite{} require a very high level of detail for every metadata tag, making it unsuitabe for use in our context where that detail might not be available. Instead, we assume that the expert qualifies the sensor names with metadata tags that have been developed as a part of the Project Haystack effor~\cite{}, which is an open source effort to develop taxonomies and ontologies for building equipment. This schema is, however, very limited, and not applicable to a wide variety of building-specific sensor points (such as specific alarms, etc). In these cases, we expect the expert to use an easily understandable long-form tag, which is consistent across the entire building. This can be achieved by presenting the expert a set of tags that has already been used in a that building to qualify a particular substring. 
+{\it Tag Names :} The goal of the expert should be to use tag names from a normalized building equipment taxonomy schema that has been widely adopted. Currently, there is no consensus schema in the sensor network, or building management system vendor community about a particular schema. Some schemas such as Green Building XML~\cite{GBXML}, and Industry Foundation Classes~\cite{IFC} require a very high level of detail for every metadata tag, making it unsuitabe for use in our context where that detail might not be available. Instead, we assume that the expert qualifies the sensor names with metadata tags that have been developed as a part of the Project Haystack effor~\cite{haystack}, which is an open source effort to develop taxonomies and ontologies for building equipment. This schema is, however, very limited, and not applicable to a wide variety of building-specific sensor points (such as specific alarms, etc). In these cases, we expect the expert to use an easily understandable long-form tag, which is consistent across the entire building. This can be achieved by presenting the expert a set of tags that has already been used in a that building to qualify a particular substring. 
 
 
 \subsection{Synthesis technique overview}
@@ -46,7 +46,7 @@ We term each of these tuples as a {\it qualification}, because it qualifies a se
 \end{figure}
 
 
-We will first describe the high-level logic of the synthesis technique in ~\cite{gulwani} which synthesizes simple regular expressions to transform input columns of a desired spreadsheet to a desired output column. We will then describe the set of specific changes to adapt this technique to our context. 
+We will first describe the high-level logic of the synthesis technique in ~\cite{Gulwani:2011} which synthesizes simple regular expressions to transform input columns of a desired spreadsheet to a desired output column. The details of the technique is available in the corresponding paper. We will then describe the set of specific changes to adapt this technique to our context. 
 
 {\bf The Algorithm:}
 
@@ -157,107 +157,6 @@ However, utilizing the position of a regular expression with a higher priority w
 
 
 
-
-%We make four design decisions to adapt the algorithm to our setting. First, we augment the set of tokens that regular expressions normally use (one token denoting an alphabetic character, one token denoting a numeric character, and a separate token for each special character), to include one token for each constant value indicated by the expert. We did this because using the non-augmented token set is not expressive enough to extract the desired substrings (as will be shown in Figure~\ref{}). Second, 
-%
-
-%Second, instead of optimizing for the minimum number of partitions that describe a tag's string extraction rules over all inputed examples, we choose an online approach which just greedily intersects the string extraction expressions from a new example with the existing partition with which it has the maximum overlap. 
-%This is done to minimize overhead in an online setting , where the number of existing examples might be large ( it takes more than 100 examples to fully qualify all the sensor names on the buildings we tested our technique on ). 
-%
-%
-%\subsection{Our adaptation}
-%
-%The high-level logic of our algorithm is adapted from ~\cite{gulwani}, which implemented learning simple regular expressions to transform input columns to a desired output column in a spreadsheet. The main aim of the technique is to learn two sets of information from the inputed examples --- (a) whether a particular tag is applicable on a particular sensor name, and (b) what is the set of regular expression which will give it the alpphanumeric characters corresponding to that tag. 
-%
-%From each expert-provided example and for each tag in that example, we compute the set of all expressions from our language (shown in Figure~\ref{language}), that could extract the required substring from that sensor name. The language defines the rules to apply regular expressions to extract required substrings from a string. If the same tag is present in more than one example, the tag's new extraction expression is the intersection of it's the extraction expression sets  for each of those examples. If the extraction expression sets cannot be intersected, they are maintained as two disjoint sets, which we shall hereby term as a {\it partitions}. The intuition behind intersecting the extraction expression sets is that as more examples containing a particular tag is seen, the extraction expressions get more and more concise. 
-%
-%Then, for each disjoint set of extraction expressions for each tag, a boolean classifier is built in the DNF form, to differentiate the examples containing that particular tag, from all the remaining examples. When a new sensor name is seen, the classifier is applied on it to check whether that tag is applicable on it, and if so, then the extraction expressions corresponding to the classifier is applied on the sensor name. 
-%
-%
-%\subsection{final output - project Haystack}
-%
-%final output maybe in any form. 
-%we realized going into this soon that not all tags conformed to any known schema. 
-%For the general tags like room, ahu, vav we have conformed to the project haystack ones. 
-%for the remainder of the points which are building specific, we just require that a person uses a consistent schema. 
-%
-%
-%Boosting the metadata can enable better usability across buildings. The question automatically becomes which metadata space to normalize to. There are many metadata schemes devised for representing all buildings. Some of them are too specific and require heavy lifting, and some of them are too simple and do not meet the criteria of being expressive enough for the necessary facets of a building. 
-%
-%
-%The goal is to normalize the existing metadata. 
-%
-%\subsection{Technique Overview}
-%
-%The synthesis technique is adapted from ~\cite{gulwani}, and tries to learn the regular expressions which 
-%
-%of our technique is to provide building-specific experts the ability to come up with ur technique tried to learn the regular expression patterns that 
-%\subsection{learning by example}
-%
-%
-%
-%-The basic structure of our technique is derived from gluwani.
-%-The goal is to 
-%
-%Our proposed technique is derived from the synthesis technique developed in ~\cite{}. In this section, we provide an overview of the technique, and then we will introduce how we adapt this technique to our problem. \\
-%
-%%\centerline{Atomic expr $f$ :=  \bf{SubStr}$(v_{i}, p_1, p_2)$}
-%%\centerline{Position $p$ := $k$ | \bf{pos}$(r_1,r_2, c)$}
-%%\centerline{Regular exp $r$ := $\epsilon$ | $\tau$ | \bf{TokenSeq}$(\tau_1 ...  \tau_n)$} 
-%
-%
-%Atomic expr $f$ :=  {\bf SubStr}$(v_i, p_1, p_2)$ 
-%
-%Position $p$ := $k$ | {\bf pos}$(r_1,r_2, c)$ 
-%
-%Regular exp $r$ := $\epsilon$ | $\tau$ | {\bf TokenSeq} $(\tau_1 ...  \tau_n)$ \\
-%
-%
-%
-%
-%As an example, consider that we have to extract \texttt{ART} from \texttt{BLDA1R465\_\_ART}, the substring expression can be written as {\bf SubStr}$(s, -3, -14)$, or {\bf SubStr}$(s,$ {\bf Pos()}
-%
-%
-%
-%
-% way we learn regular expressions from inputs provided by the expert. We shall use the example scada tag {\tt BLDA1R465  ART} as a goto example throughout this section.
-%
-%In the following sections, we will use the word {\it token} to refer a token from a character class. So a token might be is a character or a group of characters in a point to be expanded. In the For instance, in the point {\tt BLDA1R465 ART} has the tokens as shown in Figure~\ref{fig:exampleInput}
-%
-%
-%\subsubsection{Inputs}
-%
-%For every example an expert provides, we require three types of information - (a) the normalized metadata tag which is contained in the point name,  (b) the mapping of the labels in the data to normalized metadata tags , (c) the starting point of those labels, and (d) whether the value of the label is a constant or variable. For instance, consider the expert is asked to fully qualify the sensor point name \texttt{BLDA1R435\_\_ART}. Shown below is the expected input by the user.
-%
-%
-%
-%The aim of the learning algorithm would then be to fully qualify the remaining examples
-%
-%
-%
-%Whenever the expert types in the explanation for an input, we require that the expert give a full description of the point. The full description of a point consist of the haystack tags the point contains, the starting and ending position of the string that correspond to the haystack tag, mentioning whether the substring is a constant or is variable. For instance, in our example, {\tt BLD} is a constant for the haystack tag {\bf site}, but {\tt 465} is a variable substring, because the tag value will change from point to point. 
-%
-%
-%are the tokens contained in a tag, their starting and ending positions, whether the tag has an associated value, and whether the associated value 
-%
-%\subsection{challenges}
-%
-%
-%-different types of points all together in the same corpus, and it is not one or two . you have to generate a regex classifier for all known tags. 
-%-tokens vary from building to building -> so no pre-defined token ( alternative were using Excel's stuff or treating every letter as an individual token ). Show the experiment that shows the number of incorrectly qualified vs number of examples added.
-%-simplest classifier to more complex classifier
-%
-%
-%
-%\subsection{technique we chose and modifications}
-%
-%learning by input output example
-%- subtring generation
-%-intersection
-%-predicate generation
-%
-
-
 \section{Evaluation of Learning By Example}
 \label{sec:eval}
 
@@ -267,9 +166,9 @@ In this section, we guage the effectiveness of our learning by example technique
 
 We manually generated ground truth data for all the points in two buildings whose building management system was installed by different vendors. Building $1$ has 1586 sensor points and was built in the 1990s. Building $2$ was built in the 2000s and has 2551 sense points. The label characteristics of the two buildings are shown in Figure~\ref{fig:buildingLabelCharacteristics}. 
 
-Figure~\ref{fig:labelFreq} shows that in  these two buildings, a few labels (about 20 in each building) frequently appear in a lot of sensor names. This is pretty common in commercial buildings, where a majority of the points are related to zone or room information. For instance, Building $1$, has a room setpoint sensor, an airflow sensor and temperature sensor for each of its more than 200 rooms. Each of these points have a label indicating that they are a room, and a room number. These most frequent labels also fully qualify a large number of the sensor names in both buildings. In other words, learning proper classifiers and qualifications for about 20 labels could yield a full qualification for 70-80\% of the sensor names in both these buildings.
+Figure~\ref{fig:labelFreq} shows that in  these two buildings, a few tags (about 20 in each building) frequently appear in a lot of sensor names. This is pretty common in commercial buildings, where a majority of the points are related to zone or room information. For instance, Building $1$, has a room setpoint sensor, an airflow sensor and temperature sensor for each of its more than 200 rooms. Each of these points have a label indicating that they are a room, and a room number. These most frequent tags also fully qualify a large number of the sensor names in both buildings. In other words, learning proper classifiers and qualifications for about 20 labels could yield a full qualification for 70-80\% of the sensor names in both these buildings.
 
-The distribution frequency of labels also has a long tail. For both the buildings, the labels corresponding to {\it site} and {\it zoneRef} are most common. However, the distribution of labels show that there is also a long tail. These comprise of building specific sensors, alarms or status variables. There are also a lot of incomplete or inconsistent labeling of sensor names, the labels of which fall in this long tail. Thus, one of the main objectives of the learning algorithm is that it does not learn wrong classifiers for labels based on sensor names that fall in this long tail.
+The distribution frequency of labels also has a long tail. For both the buildings, the labels corresponding to {\it site} and {\it zoneRef} are most common. However, the distribution of labels show that there is also a long tail. These comprise of building specific sensors, alarms or status variables. There are also a lot of incomplete or inconsistent labeling of sensor names, the tags of which fall in this long tail. Thus, one of the main objectives of the learning algorithm is that it does not learn wrong classifiers for tags based on sensor names that fall in this long tail.
 
 \begin{figure}[h!]]
 \centering
@@ -295,8 +194,6 @@ The distribution frequency of labels also has a long tail. For both the building
 
 The large number of sensors in a building pose a challenge in selecting the next example to present to the expert. First, the expert might not always be able to browse through all sensor points to check correct qualification. Also, an expert might visally not be able to discern which points would add the most amount of information to the learning process. 
 
-This process can be facilitated by the internal notion the learning algorithm has of how much of each sensor name it has been able to qualify. This notion is maintained by simply comparing the sensor name to all the labels that the algorithm applied on it. Note that, the algorithm can incorrectly apply labels on a sensor name, which may lead to erroneous conclusions. The incorrect application of labels might be due to incorrectness or incompleteness of the boolean matching expression or the string extraction regular expressions.
-
 We implemented four different generators to evaluate which example should be provided next to the expert:
 
 {\bf Random:} This generator just finds at random the next example to present to the expert. While choosing the example, the random algorithm chooses among the set of sensor names which it feels it has not been able to fully qualify.  
@@ -305,10 +202,12 @@ We implemented four different generators to evaluate which example should be pro
 
 {\bf MaxRemaining :} This chooses the example, that the learning technique feels has the maximum string length left to qualify. These examples would help the learning technique gain coverage over the space of unsees labels. The more labels the learning technique knows, the more sensor name information it will be able to qualify.
 
-{\bf Self-Correcting :} There are some sensor names where the learning algorithm can itself figure out that it has incorrectly qualified a sensor name. There can be three such indicators. First, for a sensor name which has matched its boolean classifier, none of its left or right position regular expressions is applicable. Second, if the sensor name has been qualified with labels that overlap over the same substring. Third, the learning algorithm can get a notion of the labelling uncertainty of a sensor name, if its qualification labels change drastically when a new example has been added. This generator gives the expert the examples that satisfy the most number of these three criteria. Once, none of the points satisfy these criteria, this generator defaults to the MinRemaining generator.
+{\bf Self Correcting :} There are some sensor names where the learning algorithm can itself figure out that it has incorrectly qualified a sensor name. There can be three such indicators. First, for a sensor name which has matched its boolean classifier, but none of its set of {\bf SubString} regular expressions is applicable. Second, if the sensor name has been qualified with labels that overlap over the same substring. Third, the learning algorithm can get a notion of the qualification uncertainty of a sensor name, if its (tag, value) tuples change drastically when a new example has been added. This generator gives the expert the examples that satisfy the most number of these three criteria. Once, none of the points satisfy these criteria, this generator defaults to the MinRemaining generator.
 
 
-We wrote a script that automatically gave the learning algorithm the example that it asked for, and evaluated the qualifications provided by the algorithm. We terminated when the number of correct full sensor qualifications reached 90\%. Figures ~\ref{fig:active-learning} show the results of the four generators on the two buildings. The \emph{Random} generator took the least number of examples to achieve full qualification of 90\% of the sensor names, achieving it much quicker than the others. The reason for this is due to the long tail of the label distribution of tag names (  Figure~\ref{ig:buildingLabelCharacteristics}). The top 20 most occurring labels, by themselves, can fully qualify about the majority of the sensor names. A random generator has a high probability of finding one of these points, thus acquanting itself more quickly of the most frequently occuring labels. Neither of the other three classifiers is able to achieve that. They get stuck trying to either get every bit of information from sensor with obscure labels (\emph{MinRemaining}), or trying to cover more labels by first qualifying sensors which have been least qualified(\emph{MaxRemaining}), or by choosing form the set of ill-formed sensor names, which would indicate errors to the learning algorithm (\emph{Self-Correcting}).
+We wrote a script that automatically gave the learning algorithm the example that it asked for, and evaluated the qualifications provided by the algorithm. We terminated when the number of correct full sensor qualifications reached 90\%. A full qualification of a sensor name into (tag, value) tuples is correct (a) the correct tags were applied on it and  obtained the correct values corresponding to each tag, (b) No extra incorrect tag was applied to the sensor name, and (c) the tags were able to fully qualify every alphanumeric character of the sensor name.
+
+Figures ~\ref{fig:active-learning} show the results of the four generators on the two buildings. The \emph{Random} generator took the least number of examples to achieve full qualification of 70\% of the sensor names, achieving it much quicker than the others. The reason for this is due to the long tail of the label distribution of tag names (  Figure~\ref{ig:buildingLabelCharacteristics}). The top 20 most occurring tags, by themselves, can fully qualify about the majority of the sensor names. A random generator has a high probability of finding one of these points, thus acquanting itself more quickly of the most frequently occuring labels. Neither of the other three classifiers is able to achieve that. They get stuck trying to learn regular expressions from sensors with obscure tags (\emph{MinRemaining}), or trying to cover more labels by first qualifying sensors which have been least qualified, which comprise mainly of sensor names which are inconsistently named (\emph{MaxRemaining}), or by choosing form the set of ill-formed sensor names, which would indicate errors to the learning algorithm (\emph{Self-Correcting}).
 
 
 \begin{figure}[h!]
@@ -345,13 +244,21 @@ We wrote a script that automatically gave the learning algorithm the example tha
 
 
 
-One of the major goals of learning from examples provided by an expert is that the learnt regular expressions may be applicable to other buildings which have similar naming conventions. In this section, we evaluate the efficacy of the regular expressions learnt on Building $1$ of our testbed with the remaining 55 buildings on campus, each of which was commissioned by the same vendor. As mentioned before, the remaining buildings comprise about 15,000 sensor points.
+One of the major goals of learning from examples provided by an expert is that the learnt regular expressions may be applicable to other buildings which have similar naming conventions. In this section, we evaluate the efficacy of the regular expressions learnt on Building $1$ of our testbed with the remaining 55 buildings on campus, each of which was commissioned by the same vendor. As mentioned before, the remaining buildings comprise about 16,000 sensor points.
 
 Figure~\ref{fig:campusWideStats} shows the applicability of tags learnt from Building $1$ to the remaining buildings. Tags which were most frequent in Building $1$ such as {\bf zone, zoneRef} and {\bf ahuRef}, were also widely applicable throughout other buildings. This is expected because all these buildings are commercial offices, with a large number of zone, and a set of points associated with each zone. There are also a few tags which are infrequent in a particular building, but applicable across all buildings, e.g the {\bf return water temp} tag or the {\bf outside air temp} tag. Thus, fully qualifying even one building has the potential to yield regular expressions that can then be propagated across buildings.
 
-It was impractical to ground truth all the buildings and its 15,000 sensor points for our experiment. Hence, we hand wrote regular expressions to the best of our efforts to qualify sensor names in those buildings. It is this manual qualification data that we treat as ground truth in the our experiment. We run three experiments, where we use the regular expressions obtained after 50, 70 and 90\% full qualification results obtained by the {\bf Random} process in the previous experiment(see Figure~\ref{fig:active-learning-soda}) respectively . While running these expressions on a different building, we just replaced the token corresponding to the tag {\bf site} to the building-specific {\bf site}  token. 
+It was impractical to ground truth all the buildings and its 16,000 sensor points for our experiment. Hence, we hand wrote regular expressions to the best of our efforts to qualify sensor names in those buildings. It is this manual qualification data that we treat as ground truth in the our experiment. We run three experiments, where we use the regular expressions obtained after 50, 70 and 90\% full qualification results obtained by the {\bf Random} process in the previous experiment(see Figure~\ref{fig:active-learning-soda}).While running these expressions on a different building, we just replaced the token corresponding to the tag {\bf site} to the building-specific {\bf site}  token. 
 
-Figure~\ref{fig:recallCampuswide} shows the true-positive rate based for each tag based on our ground truth data. The true positive rate indicates that the required tag was correctly applied where it was applicable, and it was able to qualify the correct substring from the corresponding sensor name. As we can see, the regular expressions were able to identify almost all the buildings that each tag learnt from Building $1$ was applicable to. Some of the tags could not be applicable to other buildings, because they use different constant values for the same tag name. For instance, the {\bf exhaust fan} tag is specified in certain buildings as \texttt{EF}, wheras in Building $1$ it was specified as \texttt{E}. Also, certain variable tags vary in format across buildings, e.g the {\bf zoneRef} tag, which leads to a lower true positive rate for such tags. 
+Figure~\ref{fig:recallCampuswide} shows the true-positive rate based for each tag based on our ground truth data. The true positive rate indicates that the required tag was correctly applied where it was applicable, and it was able to qualify the correct substring from the corresponding sensor name. 
+
+From the graphs we can see that there is direct effort-applicability correlation. The more fully qualified a particular building is, the more tag applicability expressions are learnt. When enough examples were provided such that Building $1$ had correctly fully qualified only 50\% of the sensor names, the synthesis technique had either not encountered a lot of the lesser frequent tags, or did not have enough examples to build a robust classifier, leaving the regular expression set unable to discover the same tags in other buildings. However, when enough examples for 90\% full qualification was provided, the synthesis algorithm was able to correctly identify and qualify sensor names in other buildings with the correct tag and value. 
+
+Some of the tags could not be applicable to other buildings, because they use different constant values for the same tag name. For instance, the {\bf exhaust fan} tag is specified in certain buildings as \texttt{EF}, wheras in Building $1$ it was specified as \texttt{E}. Also, certain tags which extract variable values (the {\bf zoneRef} tag) face some challenges when scaling across buildings. 
+
+\subsection{Discussion}
+
+
 
 \begin{figure*}[ht!]
 \centering
@@ -359,16 +266,19 @@ Figure~\ref{fig:recallCampuswide} shows the true-positive rate based for each ta
                 \centering
 		\includegraphics[width=\textwidth]{./figs/recallCampusWide-50.pdf}
                 \caption{Regular expressions obtained after 50\% full qualification by {\bf Random}}
+		\label{fig:full50}
 	\end{subfigure}
 	\begin{subfigure}{0.4\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/recallCampusWide-70.pdf}
                 \caption{Regular expressions obtained after 70\% full qualification by {\bf Random}}
+		\label{fig:full70}
 	\end{subfigure}
 	\begin{subfigure}{0.4\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/recallCampusWide-90.pdf}
                 \caption{Regular expressions obtained after 90\% full qualification by {\bf Random}}
+		\label{fig:full90}
 	\end{subfigure}
 \caption{This Figure shows the efficacy of using the regular expressions learned on Building $1$ in qualifying point names with similar tags in other buildings, for three different set of expressions obtained from our language after applying the {\bf Random} example generator in the previous experiment until it had achieved 50, 70 and 90\% full qualifications of sensor names in Building $1$. The x-axis are the tags ordered by their frequency of occurence in Building $1$. The primary y-axis shows the true positive rate of identifying a particular tag in the point names in other buildings as compared to our ground truth data. The secondary y-axis shows the true positive rate rate of identifying a tag in a different building as compared to our ground truth data.}
 \label{fig:recallCampuswide}
