@@ -5,7 +5,7 @@ Buildings are notoriously complex from a management perspective.  They consume a
 of the energy produced in the United States and much of is wasted~\cite{next10_waste}.  
 There has been
 much work in the building science community to reduce their energy consumption and make them more
-efficieny, but the route to broader impact is typically carried out through regulations guided
+efficient, but the route to broader impact is typically carried out through regulations guided
 by the findings of studies in those communities.%~\cite{regulation}.
 We aim to let solutions reach buildings \emph{directly} by making sense of the data they produce
 as quickly and accurately as possible.
@@ -43,10 +43,10 @@ When dealing with a small number of points such differences are usually not a pr
 visual inspection, the two
 encodings are similar enough that the engineer can decode the meaning.  However, for automatic 
 processing or processing a large number of points across buildings, these kinds of 
-variations makes it difficult to generalize the character-contruction rule set.  
+variations makes it difficult to generalize the character-construction rule set.  
 \emph{Fundamentally, full coverage is attainable if we could learn all the codes and map
 them to more descriptive search terms.}
-Since many of the codes change from across vendors and buidlings, Analytical applications 
+Since many of the codes change from across vendors and buildings, Analytical applications 
 need to make building-specific adjustments in order to run the same analysis job across each
 building.  For example, if we are trying to determine the fraction of uncomfortable rooms
 in each building on our campus, the two collections of sense points we need are the temperature
@@ -63,7 +63,7 @@ rule construction.  You can get full coverage with no automation.  This is essen
 that is common today.  Every solution that incorporates a building's data is manually
 adjusted, specifically for that particular building.  You can get some degree of coverage if you
 use a general set of rules, increasing the automation factor and decrease the manual one.
-Tuning is quite arduos and in most cases, non-programmers are tuning the data ingestion script.
+Tuning is quite arduous and in most cases, non-programmers are tuning the data ingestion script.
 
 The problem for a large number of buildings is particular pernicious to the goal. Although 
 there are some similarities for certain kinds of sensor
@@ -84,7 +84,7 @@ is ``buildingA room setpoint''.  For the temperature query we attain 87.5\% of t
 actual sense points we are searching for, while for the setpoint query we attain only 56\%
 of the setpoints in the building.  We could try different search queries that yield different
 results, however, because there's only \emph{some} overlapping metadata terms across
-buildings, coverage tends to be qutie poor.
+buildings, coverage tends to be quite poor.
 
 \begin{figure}[h!]
 \centering
@@ -109,7 +109,7 @@ to the work by Gulwani et al~\cite{Gulwani:2011}, and use this the resulting pro
 a few more example in each building to have the process learn the variants of all the codes
 and boost them with extra tags that are learned from other buildings.
 
-This process allows us to leverage the knowledge of the expert while minimzing the integration
+This process allows us to leverage the knowledge of the expert while minimizing the integration
 overhead per building.  Moreover, as more examples the provided, the better that 
 algorithm can learn how to cover a broader set of codes and boost them with common tags.
 Also, the technique used in previous work is well suited for our problem, since
@@ -174,8 +174,6 @@ the size of the building.  There is one large building with many sense points, b
 seems to have little to do with the density of the deployment.
 The access this
 this kind of breadth of system and building types makes our study unique.
-
-
 
 
 % expand the discussion to include sensor sin iot?
