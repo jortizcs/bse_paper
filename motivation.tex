@@ -25,34 +25,33 @@ we wish to unify and make sense of in a more systematic and automated fashion.
 % BLDA1R545__ART
 %Buildings consume a large fraction of the energy produced in the United States, and much of it
 %is wasted\cite{epa}.  
-The data parallels the complexity of buildings. Ad-hoc data management practices
+The data problems parallel the complexity of buildings. Ad-hoc data management practices
 make it difficult for any analytical solution to be widely ported or run across building
-systems.  For example, consider the following stream names: \texttt{BLDA1R435\_\_ART,
-BLDA1R435\_\_ARS, BLDA1R545\_\_ART}. Each name encodes contextual information in the form
-of concatinated character sequences. In these, the first 4 characters refer to the 
-name of the building, the next one encodes the air handling unit association, the next 
-four encode the room,
-and the last three encode the acronym for the type.  Although the examples given are well
-structured, many variants within the same data set exist.  For example, \texttt{BLD\_1R435\_ARG\_}
-is the encoding for a different sensor in the same room as the others, but with a name
-that is \emph{like} although not exactly the same structure as the others.
-
+systems.  
+%For example, consider the following stream names: \texttt{BLDA1R435\_\_ART,
+%BLDA1R435\_\_ARS}. Each name encodes contextual information in the form
+%of concatinated character sequences. In these, the first 4 characters refer to the 
+%name of the building, the next one encodes the air handling unit association, the next 
+%four encode the room,
+%and the last three encode the acronym for the type.  Although the examples given are well
+%structured, many variants within the same data set exist.  For example, \texttt{BLD\_1R435\_ARG\_}
+%is the encoding for a different sensor in the same room as the others, but with a name
+%that is \emph{like} although not exactly the same structure as the others.
 % Discuss how active learning technique can be used to "unify" these tag names
-
 When dealing with a small number of points such differences are usually not a problem.  Upon 
-visual inspection, the two
+visual inspection, 
 encodings are similar enough that the engineer can decode the meaning.  However, for automatic 
 processing or processing a large number of points across buildings, these kinds of 
 variations makes it difficult to generalize the character-construction rule set.  
 \emph{Fundamentally, full coverage is attainable if we could learn all the codes and map
 them to more descriptive search terms.}
-Since many of the codes change from across vendors and buildings, Analytical applications 
-need to make building-specific adjustments in order to run the same analysis job across each
-building.  For example, if we are trying to determine the fraction of uncomfortable rooms
-in each building on our campus, the two collections of sense points we need are the temperature
-sensors and the corresponding set points in each building.  Because the code for temperature
-sensor and the code for set point is slightly different in each building, the query
-must be adjusted each time the job is set to run on the data from a new building.
+%Since many of the codes change from across vendors and buildings, Analytical applications 
+%need to make building-specific adjustments in order to run the same analysis job across each
+%building.  For example, if we are trying to determine the fraction of uncomfortable rooms
+%in each building on our campus, the two collections of sense points we need are the temperature
+%sensors and the corresponding set points in each building.  Because the code for temperature
+%sensor and the code for set point is slightly different in each building, the query
+%must be adjusted each time the job is set to run on the data from a new building.
 
 At a high level we want to normalize the metadata across all buildings so that one query
 can run across all of buildings, and we want the normalization process to be automatic, so that
@@ -65,7 +64,7 @@ adjusted, specifically for that particular building.  You can get some degree of
 use a general set of rules, increasing the automation factor and decrease the manual one.
 Tuning is quite arduous and in most cases, non-programmers are tuning the data ingestion script.
 
-The problem for a large number of buildings is particular pernicious to the goal. Although 
+The problem for a large number of buildings is particularly pernicious to the goal. Although 
 there are some similarities for certain kinds of sensor
 labels and metadata, searching across them yields results of varying success.  Consider the 
 simplest kind of a search, a grep scan across the metadata associated with the points
