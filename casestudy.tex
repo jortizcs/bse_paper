@@ -26,6 +26,24 @@ In this section, we demonstrate that with the metadata automatically expanded an
 \subsection{Experimental Setup}
 We implement two applications and perform the analysis on the same two buildings used in Section 5.1, and each building is installed with a different management system. Building 1 uses the system from Barrington while building 2 is installed with the Siemens BACnet system~\cite{bacnet}. We used the temperature data as well as setpoint information of the rooms in each building. The temperature measurements are reported every 15 seconds and the data used for analysis is from one week in June 2009 and January 2012 respectively. Particularly, we pick the data during the working hours from 9am to 5pm for analysis.
 
+\begin{figure*}[ht!]
+\centering
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/uncmft_soda.eps}
+                \caption{Uncomfortable Rooms}
+                \label{fig:soda_zone1}
+	\end{subfigure}
+	\begin{subfigure}{0.48\textwidth}
+                \centering
+		\includegraphics[width=\textwidth]{./figs/rogue_soda.eps}
+                \caption{Rogue Rooms}
+                \label{fig:soda_zone2}
+
+	\end{subfigure}
+\caption{Breakdown of the uncomfortable and rogue rooms in building 1 by air handler unit zone. Uncomfortable rooms are those whose temperature at least once exceeds the comfort range suggested by ASHRAE. Rogue rooms are those whose temperature deviates from the setpoint more than 3 Celsius degree. For each zone, we show the number of rooms in it, the number of zones at least once meets the criterion, and the number of rooms that meet the criterion in more than 50\%/80\% of the one-week period.}
+\end{figure*}
+
 \subsection{Uncomfortable Rooms}
 It's not unusual to have rooms in a building stay extremely cold or hot thus making the occupants feel uncomfortable and incurring energy waste. The discomfort is usually caused by improper setpoint configuration or dysfunction of the HVAC systems, and being able to identify these uncomfortable zones or rooms in the building is vital to improve occupant comfort as well as achieve potential energy savings. With the metadata normalized using our techniques, we are able to search for the desired streams, e.g., the temperature and setpoint of a room, and analyze the thermal performance of different buildings despite of the different naming schema used to label sensors and meters.
 
@@ -69,24 +87,6 @@ Figure~\ref{fig:cdf_temp} presents the temperature deviation distribution for bo
 \end{table}
 
 Moreover, for building 1 we group the identified uncomfortable rooms down to their corresponding air handler units (AHU), as shown in Figure~\ref{fig:soda_zone1}. For each AHU zone, we present the number of rooms in it, the number of rooms whose temperature have been at least once outside the comfort range thus being uncomfortable, and , the number of rooms that have been uncomfortable in more than 50\% of the one-week time. We see that for each AHU zone a large portion of the rooms are uncomfortable in even more than 50\% of the time, indicating the building was very likely to operate under a improper schedule. The ground truth analysis covers all the rooms in each building, so all potential uncomfortable rooms are identified here. However, the analysis using the name points expanded with our techniques would miss some of the uncomfortable rooms because the expansion contains certain error rates. We will discuss the error rates later.
-
-\begin{figure*}[ht!]
-\centering
-	\begin{subfigure}{0.48\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/uncmft_soda.eps}
-                \caption{Uncomfortable Rooms}
-                \label{fig:soda_zone1}
-	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
-                \centering
-		\includegraphics[width=\textwidth]{./figs/rogue_soda.eps}
-                \caption{Rogue Rooms}
-                \label{fig:soda_zone2}
-
-	\end{subfigure}
-\caption{Breakdown of the uncomfortable and rogue rooms in building 1 by air handler unit zone. Uncomfortable rooms are those whose temperature at least once exceeds the comfort range suggested by ASHRAE. Rogue rooms are those whose temperature deviates from the setpoint more than 3 Celsius degree. For each zone, we show the number of rooms in it, the number of zones at least once meets the criterion, and the number of rooms that meet the criterion in more than 50\%/80\% of the one-week period.}
-\end{figure*}
 
 \subsection{Rogue Rooms}
 Heating and cooling contribute to the largest portion of energy consumption of a building, and often, HVAC system operates abnormally either because the system fails itself or the schedule of the building is problematic. And there are often some zones and rooms in a building that are constantly cold or hot than the neighbors thus incurring energy waste. We demonstrated the temperature deviation distribution above, and we are particularly interested in the periods when a room deviates from the setpoint more than 3 Celsius degree, which indicates that the room is highly likely to be under either heating or cooling. Therefore, for each building, using this criterion, we zoom in to the interested portion on the temperature deviation distribution and find rooms falling into this portion in most of the time. The ground truth results are summarized in Table~\ref{tab:rogue}. Again, we group the rooms according to their air handler unit ID and show the results in Figure~\ref{fig:soda_zone2}. We see that there are 13 rogues rooms all together in building 1, and 11 of them belong to AHU1, suggesting the unit might be either wrongly configured or misoperating.
