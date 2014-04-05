@@ -40,7 +40,7 @@ We term each of these tuples as a {\it qualification}, because it qualifies a se
 \begin{figure}[h!]
   
   \centering
-    \includegraphics[width=0.5\textwidth]{figs/stringLanguage.pdf}
+    \includegraphics[width=0.4\textwidth]{figs/stringLanguage.pdf}
 \caption{Language for learning substring extraction}
 \label{fig:language}
 \end{figure}
@@ -186,13 +186,13 @@ The distribution frequency of applicable tags also has a long tail. These compri
 
 \begin{figure}[h!]]
 \centering
-	\begin{subfigure}{0.48\textwidth}
+	\begin{subfigure}{0.40\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/pointOccuranceFreq.pdf}
                 \caption{Percentage of sensor names each tag appears in. The x-axis is sorted according to the frequency of occurence of a label}
                 \label{fig:labelFreq}
 	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
+	\begin{subfigure}{0.40\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/pointCDF.pdf}
                 \caption{Percentage of sensor names fully qualified by the highest ranking tags. A point ($x$,$y$) indicates that $y$ sensor names could be fully qualified by using labels ranked $1$ ... $x$}
@@ -205,13 +205,13 @@ The distribution frequency of applicable tags also has a long tail. These compri
 
 \begin{figure}[h!]
 \centering
-	\begin{subfigure}{0.48\textwidth}
+	\begin{subfigure}{0.40\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/soda-active-learning.pdf}
                 \caption{Building 1}
                 \label{fig:active-learning-soda}
 	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
+	\begin{subfigure}{0.40\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/sdh-active-learning.pdf}
                 \caption{Building 2}
@@ -254,13 +254,13 @@ The results show that a {\it Random} approach while seeking the next sensor name
 
 \begin{figure}[h!]
 \centering
-	\begin{subfigure}{0.48\textwidth}
+	\begin{subfigure}{0.40\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/campusWideStats-point.pdf}
                 \caption{Occurence frequency of tags learnt from Building $1$ to the other 55 buildings in our testbed. The most common tags in Building $1$ ( e.g {\it zoneRef} ) are also applicable to around 35\% of all the sensor in the testbed.}
                 \label{fig:campusWideStats-build}
 	\end{subfigure}
-	\begin{subfigure}{0.48\textwidth}
+	\begin{subfigure}{0.40\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/campusWideStats-build.pdf}
                 \caption{Occurence frequency of a tag across buildings. Even though some tags are less frequent (e.g {\it Chilled water temp} tag), they do occur across 60-80\% of the buildings. }
@@ -289,13 +289,13 @@ The results show that a {\it Random} approach while seeking the next sensor name
                 \centering
 		\includegraphics[width=\textwidth]{./figs/recallCampusWide-build-50.pdf}
                 \caption{Applying Regular expressions obtained after 50\% full qualification of Building $1$ by {\bf Random}}
-		\label{fig:point50}
+		\label{fig:build50}
 	\end{subfigure}
 	\begin{subfigure}{0.4\textwidth}
                 \centering
 		\includegraphics[width=\textwidth]{./figs/recallCampusWide-build-90.pdf}
                 \caption{Applying Regular expressions obtained after 90\% full qualification of Building $1$ by {\bf Random}}
-		\label{fig:point90}
+		\label{fig:build90}
 	\end{subfigure}
 
 
@@ -326,10 +326,10 @@ One of the major goals of learning from examples provided by an expert is that t
 
 {\bf Testbed for experiment:}
 
-Figure~\ref{fig:campusWideStats} shows the applicability of tags learnt from Building $1$ to the remaining buildings. Tags which were most frequent in Building $1$ such as {\bf zone, zoneRef} and {\bf ahuRef}, were also widely applicable throughout other buildings. This is expected because all these buildings are commercial offices, with a large number of zone, and a set of points associated with each zone. There are also a few tags which are infrequent in a particular building, but applicable across all buildings, e.g the {\bf return water temp} tag or the {\bf outside air temp} tag. Thus, fully qualifying even one building has the potential to yield regular expressions that can then be propagated across buildings.
+Figure~\ref{fig:campusWideStats} shows the applicability of tags learnt from Building $1$ to the remaining buildings. Tags which were most frequent in Building $1$ such as {\it zone, zoneRef} and {\it ahuRef}, were also widely applicable throughout other buildings. This is expected because all these buildings are commercial offices, with a large number of zone, and a set of points associated with each zone. There are also a few tags which are infrequent in a particular building, but applicable across all buildings, e.g the {\it return water temp} tag or the {\it outside air temp} tag. Thus, fully qualifying even one building has the potential to yield regular expressions that can then be propagated across buildings.
 
 {\bf Experiment:}
-It was impractical to ground truth all the buildings and its 16,000 sensor points for our experiment. Hence, we hand wrote regular expressions to the best of our efforts to qualify sensor names in those buildings. It is this manual qualification data that we treat as ground truth in the our experiment. We run three experiments, where we use the regular expressions obtained after 50 and 90\% full qualification results obtained by the {\bf Random} process in the previous experiment(see Figure~\ref{fig:active-learning-soda}).While running these expressions on a different building, we just replaced the token corresponding to the tag {\bf site} to the building-specific {\bf site}  token. 
+It was impractical to ground truth all the buildings and its 16,000 sensor points for our experiment. Hence, we hand wrote regular expressions to the best of our efforts to qualify sensor names in those buildings. It is this manual qualification data that we treat as ground truth in the our experiment. We run three experiments, where we use the regular expressions obtained after 50 and 90\% full qualification results obtained by the {\it Random} process in the previous experiment(see Figure~\ref{fig:active-learning-soda}).While running these expressions on a different building, we just replaced the token corresponding to the tag {\it site} to the building-specific {\it site}  token. 
 
 {\bf Results:}
 
@@ -341,7 +341,7 @@ However, when enough examples for 90\% full qualification was provided ( 110 exa
 
 %Thus, even though a random generator can quickly label most of the sensor names in a particular building, it may not be able to transfer all of the tags which can be propagated to other buildings. Herein lies a tradeoff between choosing the Random generator to show the expert new examples, or showing the user examples with knowledge of a larger set of buildings in mind. 
 
-Some of the tags could not be applicable to other buildings, because they use different constant values for the same tag name. For instance, the {\bf exhaust fan} tag is specified in certain buildings as \texttt{EF}, wheras in Building $1$ it was specified as \texttt{E}. Also, certain tags which extract variable values (the {\bf zoneRef} tag) face some challenges when scaling across buildings. 
+Some of the tags could not be applicable to other buildings, because they use different constant values for the same tag name. For instance, the {\it exhaust fan} tag is specified in certain buildings as \texttt{EF}, wheras in Building $1$ it was specified as \texttt{E}. Also, certain tags which extract variable values (the {\it zoneRef} tag) face some challenges when scaling across buildings. 
 
 {\bf Conclusion:}
 
